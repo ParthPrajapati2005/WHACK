@@ -19,12 +19,7 @@ except Exception as e:
 mydb = client["whack"]
 mycol = mydb["users"]
 
-user = "jackie"
-
-@app.route('/hello', methods=['GET'])
-def index():
-    print("Hello TERMINAL")
-    return "test"
+user = ""
 
 @app.route("/register", methods =['POST'])
 def register():
@@ -58,7 +53,7 @@ def login():
         return jsonify({"error":"Wrong username or password"}),200
     else:
         user = username
-        return jsonify({"message":"Logged In"},status=200),200
+        return jsonify({"message":"Logged In"}),200
 
 @app.route('/income', methods=['POST'])
 def getIncome():

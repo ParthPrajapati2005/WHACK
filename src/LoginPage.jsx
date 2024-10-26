@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import {
     MDBContainer,
@@ -8,13 +9,45 @@ import {
 } from 'mdb-react-ui-kit';
 
 import './CSS/Register.css';
+import { useAuth } from './authContext'; // Import useAuth
 
-function RegisterPage() {
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+
+function LoginPage() {
     const [formData, setFormData] = useState({ name: '', pass: '' });
     const [error, setError] = useState({ isError: false, errorMessage: "" });
+    const navigate = useNavigate(); // Initialize useNavigate
+    const { setIsAuthenticated } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();  // Prevents the form from reloading the page
+
+        if (!formData.name || !formData.pass) {
+            setError({ isError: true, errorMessage: "Please fill in all fields." });
+            return;
+        }
+
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/login', { username: formData.name, password: formData.pass });
+            console.log(response);
+            if (response.data.hasOwnProperty('error')) {
+                setError({ isError: true, errorMessage: response.data.error });
+            } else {
+                setError({ isError: false, errorMessage: "" });
+                setIsAuthenticated(true);
+                navigate('/menu');
+            }
+            // Clear form data on success
+            setFormData({ name: '', pass: '' });
+
+            //NOW GO TO MENU PAGE
+
+
+
+        } catch (error) {
+            console.log("Error in post request:", error.message);
+        }
+
 
         //LOGIN HERE
     };
@@ -69,4 +102,4 @@ function RegisterPage() {
     );
 }
 
-export default RegisterPage;
+export default LoginPage;
