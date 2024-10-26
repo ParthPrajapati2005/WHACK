@@ -29,8 +29,6 @@ def index():
 @app.route("/register", methods =['POST'])
 def register():
 
-    print("I GOT A POST REQ")
-
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
