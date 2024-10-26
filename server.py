@@ -21,6 +21,7 @@ mycol = mydb["users"]
 @app.route('/hello', methods=['GET'])
 def index():
     print("Hello TERMINAL")
+    return "test"
 
 @app.route("/register", methods =['POST'])
 def register():
