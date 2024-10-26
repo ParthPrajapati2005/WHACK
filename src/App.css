@@ -1,13 +1,9 @@
-
-*{
-  margin:0;
-  padding:0;
-}
-.bg-blue {
-  background-color: blue;
-}
-
-body, html {
+html, body {
   height: 100%;
   margin: 0;
+}
+
+.full-screen {
+  background-color: aquamarine;
+  height: 100vh; /* Ensure the container takes the full height of the viewport */
 }
