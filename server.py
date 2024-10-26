@@ -19,6 +19,8 @@ except Exception as e:
 mydb = client["whack"]
 mycol = mydb["users"]
 
+user = ""
+
 @app.route('/hello', methods=['GET'])
 def index():
     print("Hello TERMINAL")
@@ -30,7 +32,7 @@ def register():
     print("I GOT A POST REQ")
 
     data = request.get_json()
-    username =data.get('username')
+    username = data.get('username')
     password = data.get('password')
 
     if not username or not password:
@@ -56,6 +58,7 @@ def login():
     if mycol.find_one({"name" : username, "password" : password}) == None:
         return jsonify({"message":"Wrong username or password"},status=400),400
     else:
+        user = username
         return jsonify({"message":"Logged In"},status=200),200
 
 @app.route('/income', methods=['POST'])
@@ -75,6 +78,10 @@ def getIncome():
     if not other:
         other = 0
     debt = calculateTotalDebtAtEndOfGraduation(startYear,endYear,maintenance)
+    mycol.update_one(
+        {"name": user},  # Filter by username
+        {"$set": {"debt": debt , "income": {"maintenance":maintenance/12, "job":job, "other":4*other}}}  # Set debt/income even if not already there
+    )
     return jsonify({"income":(maintenance/12)+job+4*other, "debt":debt},status=200),200
 
 
@@ -94,7 +101,11 @@ def getExpenses():
         hobbies = 0
     if not other:
         other = 0
-    return jsonify({"expenses":(groceries+rent+travel+hobbies+other)*4},status=200),200
+    mycol.update_one(
+        {"name": user},  # Filter by username
+        {"$set": {"expenses":{"groceries":groceries*4, "rent":rent, "travel":travel*4, "hobbies":hobbies*4, "other":other*4}}}
+    )
+    return jsonify({"expenses":(groceries+travel+hobbies+other)*4+rent},status=200),200
 
 if __name__ == "__main__":
     app.run(debug=True)
