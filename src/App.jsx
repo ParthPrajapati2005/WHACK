@@ -19,16 +19,36 @@ function App() {
     }))
   }
 
-  const sendData = () => {
-    const data = { name: 'React User' };
-    axios.post('http://127.0.0.1:5000/hello', data)
-      .then(response => {
-        console.log('Response from POST:', response.data);
-      })
-      .catch(error => {
-        console.error('There was an error sending the data!', error);
-      });
-  };
+  useEffect(() => {
+    const sendData = async () => {
+      try{
+        const response = await fetch('http://127.0.0.1:5000/register', {
+          method: 'POST',
+          body: JSON.stringify(formData),
+          headers:{
+            "Content-type": "application/json; charset=UTF-8",
+          }
+        });
+        if(!response.ok){
+          throw new Error('Network response was not ok');
+        }
+
+      } catch(error){
+        console.log("Error in post request");
+      }
+    }
+  })
+
+  // const sendData = () => {
+  //   const data = { name: 'React User' };
+  //   axios.post('http://127.0.0.1:5000/hello', data)
+  //     .then(response => {
+  //       console.log('Response from POST:', response.data);
+  //     })
+  //     .catch(error => {
+  //       console.error('There was an error sending the data!', error);
+  //     });
+  // };
 
 
   return (
