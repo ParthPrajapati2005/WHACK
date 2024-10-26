@@ -108,5 +108,14 @@ def getExpenses():
     )
     return jsonify({"expenses":(groceries+travel+hobbies+other)*4+rent},status=200),200
 
+@app.route('/homepage', methods=['POST'])
+def getExpenses():
+    data=request.get_json()
+    username = data.get('username')
+    theUser = mycol.find_one({"username": username})
+    if theUser == None:
+        return jsonify({"message":"User not found"},status=404),404
+    return jsonify(theUser,status=200),200
+
 if __name__ == "__main__":
     app.run(debug=True)
