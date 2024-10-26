@@ -1,56 +1,52 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from 'axios';
+import Button from 'react-bootstrap/Button';
 import {
     MDBBtn,
     MDBContainer,
     MDBCard,
     MDBCardBody,
-    MDBCol,
     MDBRow,
     MDBInput
 } from 'mdb-react-ui-kit';
 
-import './CSS/Register.css'
+import './CSS/Register.css';
 
-function RegisterPage(){
+function RegisterPage() {
+    const [formData, setFormData] = useState({ name: '', pass: '' });
+    const [error, setError] = useState({ isError: false, errorMessage: "" });
 
-    const [formData, setFormData] = useState({name: '', pass: ''});
-    const [error,setError] = useState({"isError":false,"errorMessage":""});
-    
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(e.target);
-        const username = e.target.username.value;
-        const password = e.target.pass.value;
-        e.target.username.value = '';
-        e.target.pass.value = '';
-        setFormData({
-            name: username,
-            pass: password,
-        });
+    const handleSubmit = async (e) => {
+        e.preventDefault();  // Prevents the form from reloading the page
+
+        // Check if fields are filled
+        if (!formData.name || !formData.pass) {
+            setError({ isError: true, errorMessage: "Please fill in all fields." });
+            return;
+        }
+
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/register', { username: formData.name, password: formData.pass });
+            console.log(response);
+            if (response.data.hasOwnProperty('error')) {
+                setError({ isError: true, errorMessage: response.data.error });
+            } else {
+                setError({ isError: false, errorMessage: "" });
+            }
+            // Clear form data on success
+            setFormData({ name: '', pass: '' });
+        } catch (error) {
+            console.log("Error in post request:", error.message);
+        }
     };
 
-    useEffect(() => {
-        if (!formData.name || !formData.pass) return;
-
-        const sendData = async () => {
-            try {
-                const response = await axios.post('http://127.0.0.1:5000/register', { username: formData.name, password: formData.pass });
-                console.log(response);
-                console.log(response.data)
-                if(response.data.hasOwnProperty('error')){
-                    //do something to make the p tag visible
-                    setError({"isError":true,"errorMessage":response.data.error});
-                    console.log(error)
-                }
-                return response;
-            } catch (error) {
-                console.log("Error in post request:", error.message);
-            }
-        }
-        const response =  sendData();
-        setFormData({name: '', pass: ''})
-    }, [formData])
+    const handleInputChange = (e) => {
+        const { id, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [id]: value,
+        }));
+    };
 
     return (
         <MDBContainer fluid style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -59,13 +55,34 @@ function RegisterPage(){
                 <MDBCard className='mx-5 p-4 shadow-5' style={{ background: 'hsla(0, 0%, 100%, 0.8)', backdropFilter: 'blur(30px)', minWidth: '600px', maxWidth: '800px' }}>
                     <MDBCardBody className='p-5 text-center'>
                         <h2 className="fw-bold mb-5">Register</h2>
-                        <MDBRow>
-                            <MDBInput wrapperClass='mb-4' placeholder='First name' id='first-name' type='text' />
-                        </MDBRow>
 
-                        <MDBInput wrapperClass='mb-4' placeholder='Password' id='password' type='password' />
+                        {/* Display Error Message if Present */}
+                        {error.isError && <p style={{ color: 'red' }}>{error.errorMessage}</p>}
 
-                        <MDBBtn className='w-100 mb-4' size='md' onClick={handleSubmit}>Sign Up</MDBBtn>
+                        {/* Wrap in form tag */}
+                        <form onSubmit={handleSubmit}>
+                            
+                            <MDBInput
+                                wrapperClass='mb-4'
+                                placeholder='Username'
+                                id='name'
+                                type='text'
+                                value={formData.name}
+                                onChange={handleInputChange}
+                            />
+                            
+
+                            <MDBInput
+                                wrapperClass='mb-4'
+                                placeholder='Password'
+                                id='pass'
+                                type='password'
+                                value={formData.pass}
+                                onChange={handleInputChange}
+                            />
+
+                            <Button className='w-100 mb-4' size='md' type="">Sign Up</Button>
+                        </form>
                     </MDBCardBody>
                 </MDBCard>
             </div>
