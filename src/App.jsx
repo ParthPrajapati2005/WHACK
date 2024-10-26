@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Button } from 'react-bootstrap';
-import './App.css'; // Import custom CSS for styling
+import './App.css'; 
 
 function App() {
   return (
