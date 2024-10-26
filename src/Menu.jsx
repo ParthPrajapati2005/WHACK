@@ -35,22 +35,24 @@ function Menu(){
       const newData = newThing;
       console.log("Here")
       console.log(newData)
-      if(newData.typeData === 'income'){
-        const name = newThing.nameData;
-        const amount = newThing.amountData;
+      
+
+        let temp = actualData
         
         switch(type){
-            case "":
-                break
+            case "1":
+                temp.income[newData.name] =  newData.amount;
+                break;
+            case "2":
+                temp.expenses[newData.name] = newData.amount;
+                break;
+            case "3":
+                temp.debt[newData.name]=newData.amount;
+                break;
         }
-        setData((prevData) => ({
-          ...prevData,
-          income: {
-            ...actualData.income,
-            name: amount,
-          }
-        })
-  )}}, [newThing])
+        setData(temp);
+        console.log(actualData)
+        }, [newThing])
 
 
     const balance =  data.balance;
@@ -58,17 +60,17 @@ function Menu(){
     let totalIncome = 0;
     let totalExpenses = 0;
     for(let key in data.income){
-        console.log(key, data.income[key])
+        //console.log(key, data.income[key])
         totalIncome+=data.income[key];
     }
     for(let key in data.expenses){
-        console.log(key, data.expenses[key])
+        //console.log(key, data.expenses[key])
         totalExpenses+=data.expenses[key];
     }
-    console.log(totalIncome)
-    console.log(totalExpenses)
+    //console.log(totalIncome)
+    //console.log(totalExpenses)
     let cashflow = totalIncome - totalExpenses;
-    console.log(data);
+    //console.log(data);
 
 
     return(
@@ -93,7 +95,7 @@ function Menu(){
                       value={amount}
                       onChange={handleAmount}
                        />
-                    <Form.Select onChange={handleSelectChange} value={type}>
+                    <Form.Select onChange={handleType} value={type}>
                       <option>Choose the type</option>
                       <option value="1">Income</option>
                       <option value="2">Expenses</option>
