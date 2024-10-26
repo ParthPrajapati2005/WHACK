@@ -26,7 +26,7 @@ function App() {
     const sendData = async () => {
       try{
         const response = await axios.post('http://127.0.0.1:5000/register', {username : formData.name, password : formData.pass});
-        console.log(response)
+        console.log(response);
       } catch(error){
         console.log("Error in post request:", error.message);
       }
