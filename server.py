@@ -18,15 +18,9 @@ except Exception as e:
 mydb = client["whack"]
 mycol = mydb["users"]
 
-mydict = { "name": "John", "password": "Highway37" }
-
-x = mycol.insert_one(mydict)
-
-@app.route('/hello', methods=['POST'])
+@app.route('/hello', methods=['GET'])
 def index():
     print("Hello TERMINAL")
-    
-    return "",200
 
 @app.route("/register", methods =['POST'])
 def register():
@@ -39,21 +33,28 @@ def register():
     if not username or not password:
         return jsonify({"message":"Missing username or password"},status=400),400
     
-    if username in database:
+    if mycol.find_one({"name" : username}) != None:
         return jsonify({"message":"Username already taken"},status=400),400
-
-    myQ = {"name" : "John"}
-    mydoc = mycol.find(myquery)
-
-    for x in mydoc:
-        print(x);
 
     myTempUser = {"name" : username, "password" : password}
     mycol.insert_one(myTempUser)
     return jsonify({"message":"New user added"},status=200),200
 
+@app.route('/login', methods=['POST'])
 def login():
     data=request.get_json()
-    pass
+
+    username = data.get('username')
+    password = data.get('password')
+
+    if not username or not password:
+        return jsonify({"message":"Missing username or password"},status=400),400
+
+    if mycol.find_one({"name" : username, "password" : password}) == None:
+        return jsonify({"message":"Wrong username or password"},status=400),400
+    else:
+        return jsonify({"message":"Logged In"},status=200),200
+
+
 if __name__ == "__main__":
     app.run(debug=True)
