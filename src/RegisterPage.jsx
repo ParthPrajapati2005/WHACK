@@ -30,6 +30,7 @@ function RegisterPage(){
             }
         }
         const response = sendData();
+        console.log(response);
         setFormData({name: '', pass: ''})
     }, [formData])
 
