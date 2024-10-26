@@ -2,7 +2,9 @@ const data = {
     "name": "Ryan",
     "password": "password",
     "balance":1500,
-    "debt": 1000,
+    "debt": {
+        "student loan": 50000
+    },
     "income": {
         "maintenance": 100,
         "job": 1000,
