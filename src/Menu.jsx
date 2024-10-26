@@ -38,16 +38,20 @@ function Menu(){
       
 
         let temp = actualData
+        console.log(actualData)
         
         switch(type){
             case "1":
-                temp.income[newData.name] =  newData.amount;
+                // temp.income[newData.name] =  newData.amount;
+                Object.defineProperty(temp.income, newData.name,newData.amount);
                 break;
             case "2":
-                temp.expenses[newData.name] = newData.amount;
+                // temp.expenses[newData.name] = newData.amount;
+                Object.defineProperty(temp.expenses, newData.name,newData.amount);
                 break;
             case "3":
-                temp.debt[newData.name]=newData.amount;
+                // temp.debt[newData.name]=newData.amount;
+                Object.defineProperty(temp.debt, newData.name,newData.amount);
                 break;
         }
         setData(temp);
