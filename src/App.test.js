@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'; // I am here
+import { render, screen } from '@testing-library/react'; // I am here not
 import App from './App';
 
 test('renders learn react link', () => {
