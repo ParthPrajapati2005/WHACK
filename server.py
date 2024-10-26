@@ -83,7 +83,7 @@ def getIncome():
         {"name": user},  # Filter by username
         {"$set": {"debt": debt , "income": {"maintenance":maintenance/12, "job":job, "other":4*other}}}  # Set debt/income even if not already there
     )
-    return jsonify({"income":(maintenance/12)+job+4*other, "debt":debt}),200
+    return jsonify({"income": (maintenance / 12) + job + 4 * other, "debt": debt}), 200
 
 
 @app.route('/expenses', methods=['POST'])
