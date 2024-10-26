@@ -1,8 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Button } from 'react-bootstrap';
+import RegistrationComponent from './Registration';
 
 function App() {
+
+  const [formData, setFormData] = useState({name: '', pass: ''});
+
+  const handleData = (data) => {
+    console.log(data);
+    const username = data.name;
+    const password = data.pass;
+    console.log(username);
+    console.log(password);
+    setFormData((prev) => ({
+      ...formData,
+      name: username,
+      pass: password
+    }))
+  }
 
   const sendData = () => {
     const data = { name: 'React User' };
@@ -15,10 +30,13 @@ function App() {
       });
   };
 
+
   return (
-    <Container>
-      <Button onClick={sendData}>Send Data</Button>
-    </Container>
+    <>
+      <RegistrationComponent onSubmit={handleData} />
+      <p>{formData.username}</p>
+      <p>{formData.password}</p>
+    </>
   );
 }
 
