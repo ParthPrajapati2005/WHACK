@@ -83,7 +83,7 @@ def getIncome():
         {"name": user},  # Filter by username
         {"$set": {"debt": debt , "income": {"maintenance":maintenance/12, "job":job, "other":4*other}}}  # Set debt/income even if not already there
     )
-    return jsonify({"income":(maintenance/12)+job+4*other, "debt":debt},status=200),200
+    return jsonify({"income": (maintenance / 12) + job + 4 * other, "debt": debt}), 200
 
 
 @app.route('/expenses', methods=['POST'])
@@ -106,7 +106,7 @@ def getExpenses():
         {"name": user},  # Filter by username
         {"$set": {"expenses":{"groceries":groceries*4, "rent":rent, "travel":travel*4, "hobbies":hobbies*4, "other":other*4}}}
     )
-    return jsonify({"expenses":(groceries+travel+hobbies+other)*4+rent},status=200),200
+    return jsonify({"expenses":(groceries+travel+hobbies+other)*4+rent}),200
 
 @app.route('/homepage', methods=['POST'])
 def getData():
