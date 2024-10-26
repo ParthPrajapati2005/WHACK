@@ -8,7 +8,6 @@ client = MongoClient(uri, server_api=ServerApi('1'))
 app = Flask(__name__)
 CORS(app)
 
-
 try:
     client.admin.command('ping')
     print("Pinged your deployment. You successfully connected to MongoDB!")
