@@ -12,9 +12,11 @@ import {
 
 import './CSS/Register.css'
 
-function RegisterPage() {
-    const [formData, setFormData] = useState({ name: '', pass: '' });
+function RegisterPage(){
 
+    const [formData, setFormData] = useState({name: '', pass: ''});
+    const [error,setError] = useState({"isError":false,"errorMessage":""});
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         const username = e.target.username.value;
@@ -34,14 +36,20 @@ function RegisterPage() {
             try {
                 const response = await axios.post('http://127.0.0.1:5000/register', { username: formData.name, password: formData.pass });
                 console.log(response);
+                console.log(response.data)
+                if(response.data.hasOwnProperty('error')){
+                    //do something to make the p tag visible
+                    setError({"isError":true,"errorMessage":response.data.error});
+                    console.log(error)
+                }
                 return response;
             } catch (error) {
                 console.log("Error in post request:", error.message);
             }
-        };
-        sendData();
-        setFormData({ name: '', pass: '' });
-    }, [formData]);
+        }
+        const response =  sendData();
+        setFormData({name: '', pass: ''})
+    }, [formData])
 
     return (
         <MDBContainer fluid style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
