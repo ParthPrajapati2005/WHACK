@@ -19,6 +19,7 @@ function RegisterPage(){
     
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(e.target);
         const username = e.target.username.value;
         const password = e.target.pass.value;
         e.target.username.value = '';
