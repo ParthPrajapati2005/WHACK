@@ -7,7 +7,7 @@ client = MongoClient(uri, server_api=ServerApi('1'))
 
 app = Flask(__name__)
 CORS(app)
-database={}
+
 
 try:
     client.admin.command('ping')
@@ -22,7 +22,6 @@ mydict = { "name": "John", "password": "Highway37" }
 
 x = mycol.insert_one(mydict)
 
-
 @app.route('/hello', methods=['POST'])
 def index():
     print("Hello TERMINAL")
@@ -31,6 +30,8 @@ def index():
 
 @app.route("/register", methods =['POST'])
 def register():
+
+
     data = request.get_json()
     username =data.get('username')
     password = data.get('password')
@@ -40,8 +41,15 @@ def register():
     
     if username in database:
         return jsonify({"message":"Username already taken"},status=400),400
-    
-    database[username]={"username":username,"password":password}
+
+    myQ = {"name" : "John"}
+    mydoc = mycol.find(myquery)
+
+    for x in mydoc:
+        print(x);
+
+    myTempUser = {"name" : username, "password" : password}
+    mycol.insert_one(myTempUser)
     return jsonify({"message":"New user added"},status=200),200
 
 def login():
