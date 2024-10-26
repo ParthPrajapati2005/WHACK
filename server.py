@@ -2,6 +2,7 @@ from flask import Flask, jsonify,request
 from flask_cors import CORS
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+from functions import calculateTotalDebtAtEndOfGraduation
 uri = "mongodb+srv://whack:whack2024@cluster0.dyjyy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 client = MongoClient(uri, server_api=ServerApi('1'))
 
@@ -34,12 +35,10 @@ def register():
 
     print(username,password)
     if not username or not password:
-        print("Null")
         return jsonify({"error":"Missing username or password"}),200
     
     if mycol.find_one({"name" : username}) is not None:
-        print("Taken")
-        return jsonify({"error":"Username already taken"}),200
+        return jsonify({"error":"Username already taken"},),200
 
     myTempUser = {"name" : username, "password" : password}
     mycol.insert_one(myTempUser)
@@ -53,13 +52,44 @@ def login():
     password = data.get('password')
 
     if not username or not password:
-        return jsonify({"message":"Missing username or password"},status=400),400
+        return jsonify({"error":"Missing username or password"}),200
 
     if mycol.find_one({"name" : username, "password" : password}) == None:
-        return jsonify({"message":"Wrong username or password"},status=400),400
+        return jsonify({"error":"Wrong username or password"}),200
     else:
         return jsonify({"message":"Logged In"},status=200),200
 
+@app.route('/income', methods=['POST'])
+def getIncome():
+    data=request.get_json()
+    startYear = data.get('start')
+    endYear = data.get('end')
+    maintenance = data.get('maintenance')
+    job = data.get('job')
+    if not startYear or not endYear:
+        return jsonify({"message":"Missing start or end year"},status=400),400
+    if not maintenance:
+        maintenance = 0
+    if not job:
+        job = 0
+    debt = calculateTotalDebtAtEndOfGraduation(startYear,endYear,maintenance)
+    return jsonify({"income":(maintenance/12)+job, "debt":debt},status=200),200
+
+
+@app.route('/expenses', methods=['POST'])
+def getExpenses():
+    data=request.get_json()
+    groceries = data.get('groceries')
+    rent = data.get('rent')
+    travel = data.get('travel')
+    hobbies = data.get('hobbies')
+    if not rent or not groceries:
+        return jsonify({"message":"Missing rent or groceries"},status=400),400
+    if not travel:
+        travel = 0
+    if not hobbies:
+        hobbies = 0
+    return jsonify({"expenses":(groceries+rent+travel+hobbies)*4},status=200),200
 
 if __name__ == "__main__":
     app.run(debug=True)
