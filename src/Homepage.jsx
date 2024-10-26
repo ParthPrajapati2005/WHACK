@@ -9,7 +9,7 @@ function Homepage() {
             <Container fluid>
                 <Row className="justify-content-center align-items-center" style={{ height: '100vh' }}>
                     <Col xs={12} md={8} lg={6} className="text-center text-white">
-                        <h1>Ciao</h1>
+                        <h1>Future Self : Financial Time Machine</h1>
                         <p>Welcome to the responsive homepage!</p>
                         <Button variant="primary" className="w-100">Login</Button>
                         <Button variant="secondary" className="w-100">Register</Button>
