@@ -3,7 +3,9 @@ import axios from 'axios';
 import './CSS/Menu.css';
 import data from "./menuDataset";
 import { ReactComponent as AddBtn } from "./assets/addBtn.svg"
+import { ReactComponent as PenBtn } from "./assets/pen.svg"
 import { Modal, Form, Button }  from 'react-bootstrap';
+import { ReactComponent as BinBtn } from "./assets/bin.svg"
 
 function Menu(){
   
@@ -19,49 +21,91 @@ function Menu(){
   
 
   const handleClose = () => setShow(false);
-  const handleOpen = () => setShow(true);
+  const handleOpen = (pen, key, value, type) => {
+    if(pen !== undefined){
+      setName(key);
+      setAmount(value);
+      setType(type);
+    }
+    setShow(true);
+  }
+
+  const handleRemove = (key, type) => {
+
+    const keyToRemove = key;
+
+    switch(type){
+      case '1':
+        const { [keyToRemove]: unused1, ...updatedIncome1 } = actualData.income;
+        setData({
+          ...actualData,
+          income: updatedIncome1
+          })
+      break;
+      case '2':
+        const { [keyToRemove]: unused2, ...updatedIncome2 } = actualData.expenses;
+        setData({
+          ...actualData,
+          expenses: updatedIncome2
+          })
+      break;
+      case '3':
+        const { [keyToRemove]: unused3, ...updatedIncome3 } = actualData.expenses;
+        setData({
+          ...actualData,
+          expenses: updatedIncome3
+          })
+    }
+  }
+  
 
   const handleName = (e) => setName(e.target.value);
   const handleAmount = (e) => setAmount(e.target.value);
   const handleType = (e) => setType(e.target.value);
 
   const handleNew = () => {
-    setNew({nameData: name, amountData: amount, typeData: type});
+    setNew({nameData: name, amountData: amount});
   }
 
   useEffect(() => {
 
-      if(!newThing) return;  
-      const newData = newThing;
-      console.log("Here")
-      console.log(newData)
-      
+    if(!newThing) return;  
+    const key = newThing.nameData;
+    const value = newThing.amountData;
 
-        let temp = {
-            ...actualData,
-            income: { ...actualData.income },
-            expenses: { ...actualData.expenses },
-            debt: { ...actualData.debt }
-        };
-        console.log(temp)
+    switch(type){
+      case "1":
+        setData({
+          ...actualData,
+          income: {
+            ...actualData.income,
+            [key]: value
+          }
+        })
+      break;
+      case "2":
+        setData({
+          ...actualData,
+          expenses: {
+            ...actualData.expenses,
+            [key]: value
+          }
+        })
+      break;
+      case "3":
+        setData({
+          ...actualData,
+          debt: {
+            ...actualData.debt,
+            [key]: value
+          }
+        })
+      break;
+      default:
+        console.log("not found");
+    }
 
-        switch(newData.typeData){
-            case "1":
-                temp.income[newData.name] =  newData.amount;
-                // Object.defineProperty(temp.income, newData.name,newData.amount);
-                break;
-            case "2":
-                temp.expenses[newData.name] = newData.amount;
-                // Object.defineProperty(temp.expenses, newData.name,newData.amount);
-                break;
-            case "3":
-                temp.debt[newData.name]=newData.amount;
-                // Object.defineProperty(temp.debt, newData.name,newData.amount);
-                break;
-        }
-        setData(temp);
-        console.log(actualData)
-        }, [newThing])
+    }, [newThing])
 
 
     const balance =  data.balance;
@@ -130,8 +174,12 @@ function Menu(){
             <div className="bottom-row-item">Monthly Income 
                 <div className="item-container">
                     {Object.entries(actualData.income).map(([key, value]) => (
-                        <div key={key} className="income-item">
+                        <div key={key} className="income-item flex justify-between">
                             {key}: £{value}
+                            <div>
+                              <button onClick={() => handleOpen('pen', key, value, '1')}><PenBtn /></button>
+                              <button onClick={() => handleRemove(key, '1')}><BinBtn /></button>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -144,6 +192,10 @@ function Menu(){
                     {Object.entries(actualData.expenses).map(([key, value]) => (
                         <div key={key} className="expense-item">
                             {key}: £{value}
+                            <div>
+                              <button onClick={() => handleOpen('pen', key, value, '2')}><PenBtn /></button>
+                              <button><BinBtn /></button>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -156,6 +208,10 @@ function Menu(){
                     {Object.entries(actualData.debt).map(([key, value]) => (
                         <div key={key} className="expense-item">
                             {key}: £{value}
+                            <div>
+                              <button onClick={() => handleOpen('pen', key, value, '3')}><PenBtn /></button>
+                              <button><BinBtn /></button>
+                            </div>
                         </div>
                     ))}
                 </div>
