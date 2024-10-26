@@ -6,6 +6,8 @@ function RegistrationComponent({ onSubmit }){
         e.preventDefault();
         const username = e.target.username.value;
         const password = e.target.pass.value;
+        e.target.username.value = '';
+        e.target.pass.value = '';
         onSubmit({name: username, pass: password });
     }
 
