@@ -19,7 +19,6 @@ mydb = client["whack"]
 mycol = mydb["users"]
 
 mydict = { "name": "John", "password": "Highway37" }
-
 x = mycol.insert_one(mydict)
 
 @app.route('/hello', methods=['POST'])
@@ -46,7 +45,7 @@ def register():
     mydoc = mycol.find(myquery)
 
     for x in mydoc:
-        print(x);
+        print(x)
 
     myTempUser = {"name" : username, "password" : password}
     mycol.insert_one(myTempUser)
