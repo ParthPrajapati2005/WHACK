@@ -6,7 +6,7 @@ uri = "mongodb+srv://whack:whack2024@cluster0.dyjyy.mongodb.net/?retryWrites=tru
 client = MongoClient(uri, server_api=ServerApi('1'))
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 try:
     client.admin.command('ping')
@@ -33,12 +33,12 @@ def register():
     if not username or not password:
         return jsonify({"message":"Missing username or password"},status=400),400
     
-    if mycol.find_one({"name" : username}) != None:
+    if mycol.find_one({"name" : username}) is not None:
         return jsonify({"message":"Username already taken"},status=400),400
 
     myTempUser = {"name" : username, "password" : password}
     mycol.insert_one(myTempUser)
-    return jsonify({"message":"New user added"},status=200),200
+    return jsonify({"message":"New user added"}),200
 
 @app.route('/login', methods=['POST'])
 def login():
