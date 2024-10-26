@@ -1,0 +1,48 @@
+/* Make sure the html and body take up the full height */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Grid container to take full viewport height */
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 4 equal columns */
+    grid-template-rows: auto 1fr; /* Top row fits content, bottom row fills remaining space */
+    gap: 10px; /* Space between items */
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* Top row spans across all columns */
+  .top-row {
+    grid-column: 1 / -1;
+    color: black;
+    border: 3px solid #2196F3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 1.2em;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  /* Bottom row items */
+  .bottom-row-item {
+    color: black;
+    border: 3px solid #2196F3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 1em;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  

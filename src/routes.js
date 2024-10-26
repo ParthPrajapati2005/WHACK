@@ -3,7 +3,7 @@ import ErrorPage from "./ErrorPage";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 import Homepage from "./Homepage";
-
+import Menu from "./Menu.jsx"
 const routes = [
     {
         path: "/",
@@ -17,6 +17,10 @@ const routes = [
     {
         path: "/register",
         element: <RegisterPage />,
+    },
+    {
+        path:"/menu",
+        element: <Menu />
     }
 ]
 
