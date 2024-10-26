@@ -3,6 +3,9 @@ from flask_cors import CORS
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from functions import calculateTotalDebtAtEndOfGraduation
+from BankAccounts import getBank
+from LISA import getLISA
+
 uri = "mongodb+srv://whack:whack2024@cluster0.dyjyy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 client = MongoClient(uri, server_api=ServerApi('1'))
 
@@ -66,7 +69,7 @@ def getIncome():
     job = data.get('job')
     other = data.get('other')
     if not startYear or not endYear:
-        return jsonify({"message":"Missing start or end year"},status=400),400
+        return jsonify({"message":"Missing start or end year"},status=200),200
     if not maintenance:
         maintenance = 0
     if not job:
@@ -90,7 +93,7 @@ def getExpenses():
     hobbies = data.get('hobbies')
     other = data.get('other')
     if not rent or not groceries:
-        return jsonify({"message":"Missing rent or groceries"},status=400),400
+        return jsonify({"message":"Missing rent or groceries"},status=200),200
     if not travel:
         travel = 0
     if not hobbies:
@@ -111,6 +114,10 @@ def getData():
     if theUser == None:
         return jsonify({"message":"User not found"},status=404),404
     return jsonify(theUser,status=200),200
+
+@app.route('/banks', methods=['POST'])
+def getData():
+    return jsonify({"bank":getBank(), "LISA":getLISA()})
 
 if __name__ == "__main__":
     app.run(debug=True)
