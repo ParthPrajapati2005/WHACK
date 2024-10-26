@@ -25,22 +25,7 @@ function App() {
 
     const sendData = async () => {
       try{
-        const response = await fetch('http://127.0.0.1:5000/register', {
-          method: 'POST',
-          headers:{
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: formData.name,
-            password: formData.pass,
-          }),
-        });
-        if(!response.ok){
-          throw new Error('Network response was not ok');
-        }
-
-        const result = await response.json();
-        console.log(result.message);
+        const response = axios.post('http://127.0.0.1:5000/register', {username : formData.name, password : formData.pass});
 
       } catch(error){
         console.log("Error in post request:", error.message);
@@ -48,18 +33,6 @@ function App() {
     }
     sendData();
   }, [formData])
-
-  // const sendData = () => {
-  //   const data = { name: 'React User' };
-  //   axios.post('http://127.0.0.1:5000/hello', data)
-  //     .then(response => {
-  //       console.log('Response from POST:', response.data);
-  //     })
-  //     .catch(error => {
-  //       console.error('There was an error sending the data!', error);
-  //     });
-  // };
-
 
   return (
     <>

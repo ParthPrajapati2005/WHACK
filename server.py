@@ -9,7 +9,6 @@ app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-Type'
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
-
 try:
     client.admin.command('ping')
     print("Pinged your deployment. You successfully connected to MongoDB!")
@@ -27,6 +26,7 @@ def index():
 @app.route("/register", methods =['POST'])
 def register():
 
+    print("I GOT A POST REQ")
 
     data = request.get_json()
     username =data.get('username')
