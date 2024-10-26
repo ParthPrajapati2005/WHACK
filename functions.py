@@ -27,3 +27,5 @@ def calculateTotalDebtAtEndOfGraduation(startYear, endYear, maintenance):
         tot += (9250 + maintenance) * pow((1+val/100),i-startYear)
     return tot
 
+
+
