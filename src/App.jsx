@@ -27,13 +27,13 @@ function App() {
       try{
         const response = await fetch('http://127.0.0.1:5000/register', {
           method: 'POST',
+          headers:{
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({
             username: formData.name,
             password: formData.pass,
           }),
-          headers:{
-            "Content-Type": "application/json",
-          }
         });
         if(!response.ok){
           throw new Error('Network response was not ok');

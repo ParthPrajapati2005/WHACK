@@ -6,6 +6,7 @@ uri = "mongodb+srv://whack:whack2024@cluster0.dyjyy.mongodb.net/?retryWrites=tru
 client = MongoClient(uri, server_api=ServerApi('1'))
 
 app = Flask(__name__)
+app.config['CORS_HEADERS'] = 'Content-Type'
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 
