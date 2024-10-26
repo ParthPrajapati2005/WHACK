@@ -35,7 +35,9 @@ def register():
     if mycol.find_one({"name" : username}) is not None:
         return jsonify({"error":"Username already taken"},),200
 
-    myTempUser = {"name" : username, "password" : password}
+    myTempUser = {"name" : username, "password" : password,
+                  "debt": {"student" : 0} , "income": {"maintenance":0, "job":0, "other":0},
+                  "expenses":{"groceries":0, "rent":0, "travel":0, "hobbies":0, "other":0}}
     mycol.insert_one(myTempUser)
     return jsonify({"message":"New user added"}),200
 
@@ -74,7 +76,7 @@ def getIncome():
     debt = calculateTotalDebtAtEndOfGraduation(startYear,endYear,maintenance)
     mycol.update_one(
         {"name": user},  # Filter by username
-        {"$set": {"debt": debt , "income": {"maintenance":maintenance/12, "job":job, "other":4*other}}}  # Set debt/income even if not already there
+        {"$set": {"debt": {"student" : debt} , "income": {"maintenance":maintenance/12, "job":job, "other":4*other}}}  # Set debt/income even if not already there
     )
     return jsonify({"income": (maintenance / 12) + job + 4 * other, "debt": debt}), 200
 
