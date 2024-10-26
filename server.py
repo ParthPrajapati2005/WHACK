@@ -35,11 +35,12 @@ def register():
     username = data.get('username')
     password = data.get('password')
 
+    print(username,password)
     if not username or not password:
-        return jsonify({"message":"Missing username or password"}),200
+        return jsonify({"error":"Missing username or password"}),200
     
     if mycol.find_one({"name" : username}) is not None:
-        return jsonify({"message":"Username already taken"},),200
+        return jsonify({"error":"Username already taken"},),200
 
     myTempUser = {"name" : username, "password" : password}
     mycol.insert_one(myTempUser)
@@ -53,10 +54,10 @@ def login():
     password = data.get('password')
 
     if not username or not password:
-        return jsonify({"message":"Missing username or password"},status=400),400
+        return jsonify({"error":"Missing username or password"}),200
 
     if mycol.find_one({"name" : username, "password" : password}) == None:
-        return jsonify({"message":"Wrong username or password"},status=400),400
+        return jsonify({"error":"Wrong username or password"}),200
     else:
         user = username
         return jsonify({"message":"Logged In"},status=200),200
