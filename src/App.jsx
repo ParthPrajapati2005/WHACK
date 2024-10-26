@@ -5,21 +5,24 @@ import RegistrationComponent from './Registration';
 function App() {
 
   const [formData, setFormData] = useState({name: '', pass: ''});
+  const [response, setResponse] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
 
   const handleData = (data) => {
-    console.log(data);
     const username = data.name;
     const password = data.pass;
-    console.log(username);
-    console.log(password);
-    setFormData((prev) => ({
-      ...formData,
+    setFormData({
       name: username,
-      pass: password
-    }))
+      pass: password,
+    })
   }
 
   useEffect(() => {
+    console.log(formData);
+    if(!formData.name || !formData.pass) return;
+
     const sendData = async () => {
       try{
         const response = await fetch('http://127.0.0.1:5000/register', {
@@ -37,7 +40,8 @@ function App() {
         console.log("Error in post request");
       }
     }
-  })
+    sendData();
+  }, [formData])
 
   // const sendData = () => {
   //   const data = { name: 'React User' };
