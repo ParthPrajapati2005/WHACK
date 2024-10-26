@@ -19,7 +19,7 @@ except Exception as e:
 mydb = client["whack"]
 mycol = mydb["users"]
 
-user = ""
+user = "jackie"
 
 @app.route('/hello', methods=['GET'])
 def index():
@@ -109,7 +109,7 @@ def getExpenses():
     return jsonify({"expenses":(groceries+travel+hobbies+other)*4+rent},status=200),200
 
 @app.route('/homepage', methods=['POST'])
-def getExpenses():
+def getData():
     data=request.get_json()
     username = data.get('username')
     theUser = mycol.find_one({"username": username})
