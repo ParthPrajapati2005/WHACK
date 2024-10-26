@@ -1,8 +1,0 @@
-.centerDiv1 {
-    display: flex;
-    align-items: center;
-}
-
-.full-width-input {
-    width: 100%; /* Makes the input take the full width of its container */
-}
