@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from "react";
-import axios from 'axios';
+import { useState, useEffect } from "react";
 import './CSS/Menu.css';
 import data from "./menuDataset";
 import { ReactComponent as AddBtn } from "./assets/addBtn.svg"

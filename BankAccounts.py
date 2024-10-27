@@ -15,8 +15,6 @@ def getBank():
 
     table = soup.find('table', id='BestBroadband')
 
-    #print(table.prettify())
-
     if table:
 
         rows = table.find_all('tr', class_='row-3')  # Find all rows with the class "row-3"
