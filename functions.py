@@ -50,6 +50,3 @@ def suggestSpendingMl(totalMonthlyIncome):
         newRes = {key: int(value * ratio) for key, value in res.items()}
     print(newRes if newRes else res)
     return newRes if newRes else res
-
-suggestSpendingMl(700)
-
