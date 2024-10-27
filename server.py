@@ -63,30 +63,6 @@ def login():
         user = username
         return jsonify({"message":"Logged In"}),200
 
-@app.route('/income', methods=['POST'])
-def getIncome():
-    data=request.get_json()
-    startYear = data.get('start')
-    endYear = data.get('end')
-    maintenance = data.get('maintenance')
-    job = data.get('job')
-    other = data.get('other')
-    if not startYear or not endYear:
-        return jsonify({"message":"Missing start or end year"},status=200),200
-    if not maintenance:
-        maintenance = 0
-    if not job:
-        job = 0
-    if not other:
-        other = 0
-    debt = calculateTotalDebtAtEndOfGraduation(startYear,endYear,maintenance)
-    mycol.update_one(
-        {"name": user},  # ilter by username
-        {"$set": {"debt": {"student" : debt} , "income": {"maintenance":maintenance/12, "job":job, "other":4*other}}}  #Set debt/income even if not already there
-    )
-    return jsonify({"income": (maintenance / 12) + job + 4 * other, "debt": debt}), 200
-
-
 @app.route('/userobject', methods=['POST'])
 def getUserObject():
     x = mycol.find_one({"name" : user})
@@ -112,29 +88,6 @@ def setUserObject():
 
     return jsonify({"message":"recieved"}), 200
 
-
-@app.route('/expenses', methods=['POST'])
-def getExpenses():
-    data = request.get_json()
-    groceries = data.get('groceries')
-    rent = data.get('rent')
-    travel = data.get('travel')
-    hobbies = data.get('hobbies')
-    other = data.get('other')
-    if not rent or not groceries:
-        return jsonify({"message":"Missing rent or groceries"},status=200),200
-    if not travel:
-        travel = 0
-    if not hobbies:
-        hobbies = 0
-    if not other:
-        other = 0
-    mycol.update_one(
-        {"name": user},  #Filter by username
-        {"$set": {"expenses":{"groceries":groceries*4, "rent":rent, "travel":travel*4, "hobbies":hobbies*4, "other":other*4}}}
-    )
-    return jsonify({"expenses":(groceries+travel+hobbies+other)*4+rent}),200
-
 @app.route('/homepage', methods=['POST'])
 def getData():
     data = request.get_json()
@@ -146,7 +99,11 @@ def getData():
 
 @app.route('/banks', methods=['POST'])
 def getBankData():
-    return jsonify({"bank":getBank(), "LISA":getLISA()})
+    return jsonify({"bank":getBank()})
+
+@app.route('/lisa', methods=['POST'])
+def getLisaData():
+    return jsonify({"LISA":getLISA()})
 
 @app.route('/suggested',methods=['POST'])
 def getSuggested():
