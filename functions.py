@@ -13,9 +13,7 @@ interestRates = {
     2022:4.4,
     2023:6.9,
     2024:7.6,
-
 }
-
 
 def calculateTotalDebtAtEndOfGraduation(startYear, endYear, maintenance):
     tot = 0

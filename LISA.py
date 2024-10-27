@@ -3,7 +3,7 @@ import requests
 
 def getLISA():
 
-    url = 'https://www.savethestudent.org/money/lifetime-isas.html'  # Replace with the URL of the page you want to scrape
+    url = 'https://www.savethestudent.org/money/lifetime-isas.html' 
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36'
@@ -26,7 +26,6 @@ def getLISA():
         # Extract the name (from <h3>)
         name = li.find('h3')
         link = ""
-        minI = ""
 
         if(li.find('p') != None):
             link = li.find('p').find('a').get('href')
@@ -54,7 +53,6 @@ def getLISA():
         # Extract the name (from <h3>)
         name = li.find('h3')
         link = ""
-        minI = ""
 
         if(li.find('p') != None):
             link = li.find('p').find('a').get('href')

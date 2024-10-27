@@ -83,7 +83,6 @@ def getIncome():
     )
     return jsonify({"income": (maintenance / 12) + job + 4 * other, "debt": debt}), 200
 
-
 @app.route('/expenses', methods=['POST'])
 def getExpenses():
     data=request.get_json()
