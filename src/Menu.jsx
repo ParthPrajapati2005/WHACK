@@ -17,8 +17,8 @@ function Menu(){
   const [name, setName] = useState('');
   const [amount, setAmount] = useState(0);
   const [type, setType] = useState('');
-
-  
+  const [balance,setBalance] = useState(0)
+  const [showBalanceModal,setShowBalanceModal] = useState(false);
   const [loaded,setLoaded] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -34,7 +34,7 @@ function Menu(){
   const handleRemove = (key, type) => {
 
     const keyToRemove = key;
-
+    
     switch(type){
       case '1':
         const { [keyToRemove]: unused1, ...updatedIncome1 } = actualData.income;
@@ -51,26 +51,47 @@ function Menu(){
           })
       break;
       case '3':
-        const { [keyToRemove]: unused3, ...updatedIncome3 } = actualData.expenses;
+        const { [keyToRemove]: unused3, ...updatedIncome3 } = actualData.debt;
         setData({
           ...actualData,
-          expenses: updatedIncome3
+          debt: updatedIncome3
           })
+      break;
+      default:
+        console.log('error');
     }
   }
   
 
   const handleName = (e) => setName(e.target.value);
   const handleAmount = (e) => setAmount(e.target.value);
+  //const handleBalance = (e)=> setBalance(e.target.value);
+
+  const handleShowBalance = () => setShowBalanceModal(true);
   const handleType = (e) => {
     let tempType = e.target.value;
     
     setType(e.target.value)
 };
-
+const handleBalanceChange = () => {
+    setData({
+      ...actualData,
+      balance: balance,
+    });
+    setBalance(balance);
+    setShowBalanceModal(false);
+  };
   const handleNew = () => {
     setNew({nameData: name, amountData: amount});
   }
+
+
+  const responsive = {
+    superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 3 },
+    desktop: { breakpoint: { max: 3000, min: 1024 }, items: 3 },
+    tablet: { breakpoint: { max: 1024, min: 464 }, items: 3 },
+    mobile: { breakpoint: { max: 464, min: 0 }, items: 3 }
+  };
 
   useEffect(() => {
        // Ensures post request is only triggered on a change
@@ -89,7 +110,6 @@ function Menu(){
 
     switch(type){
       case "1":
-
 
         setData({
           ...actualData,
@@ -135,10 +155,11 @@ function Menu(){
       }
 
       getData()
+      setBalance(actualData.balance)
       setLoaded(true)
     }, [])
 
-    //const balance =  actualData.balance;
+    
     
     let totalIncome = 0;
     let totalExpenses = 0;
@@ -157,6 +178,30 @@ function Menu(){
 
     return(
         <>
+          <Modal show={showBalanceModal} onHide={() => setShowBalanceModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Update Balance</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group>
+              <Form.Label>New Balance</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Enter new balance"
+                value={balance}
+                onChange={(e) => setBalance(parseFloat(e.target.value))}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowBalanceModal(false)}>Close</Button>
+          <Button variant="primary" onClick={handleBalanceChange}>Save Changes</Button>
+        </Modal.Footer>
+      </Modal>  
+
+          <div className="gradient-bg">
           <Modal className="flex flex-col" show={show} onHide={handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>Insert the data</Modal.Title>
@@ -190,7 +235,10 @@ function Menu(){
                 <Button variant="secondary" onClick={handleClose}>
                   Close
                 </Button>
-                <Button variant="primary" onClick={handleNew}>
+                <Button variant="primary" onClick={() => {
+                  handleNew()
+                  handleClose()
+                }}>
                   Save Changes
                 </Button>
               </Modal.Footer>
@@ -199,11 +247,14 @@ function Menu(){
           </Modal>
 
           <div className="grid-container">
-            <div className="top-row"><div className="text-4xl " id="balance">Balance: £{actualData.balance}
-
-            </div>
+          
+          <div className="top-row"><div className="text-4xl " id="balance">Balance: £{balance}
+          <button onClick={handleShowBalance}><PenBtn /></button>
             
-            <div className="text-4xl" id="cashflow">Cashflow: £{cashflow}</div></div>
+            </div><div className="text-4xl" id="cashflow">Cashflow: £{cashflow}</div></div>
+            
+            
+
             <div className="bottom-row-item">Monthly Income 
                 <div className="item-container">
                     {Object.entries(actualData.income).map(([key, value]) => (
@@ -216,10 +267,8 @@ function Menu(){
                         </div>
                     ))}
                 </div>
-            
-
-
             </div>
+
             <div className="bottom-row-item">Monthly Expenses
             <div className="item-container">
                     {Object.entries(actualData.expenses).map(([key, value]) => (
@@ -227,13 +276,11 @@ function Menu(){
                             {key}: £{value}
                             <div>
                               <button onClick={() => handleOpen('pen', key, value, '2')}><PenBtn /></button>
-                              <button><BinBtn /></button>
+                              <button onClick={() => handleRemove(key, '2')}><BinBtn /></button>
                             </div>
                         </div>
                     ))}
                 </div>
-
-
             </div>
             
             <div className="bottom-row-item">Debts
@@ -243,14 +290,17 @@ function Menu(){
                             {key}: £{value}
                             <div>
                               <button onClick={() => handleOpen('pen', key, value, '3')}><PenBtn /></button>
-                              <button><BinBtn /></button>
+                              <button onClick={() => handleRemove(key, '3')}><BinBtn /></button>
                             </div>
                         </div>
                     ))}
                 </div>
             </div>
+
+                  
          </div>
           <button className="absolute bottom-14 right-14 scale-150 hover:fill-[#2196f3]" onClick={handleOpen}><AddBtn /></button>
+          </div>
         </>
     )
 

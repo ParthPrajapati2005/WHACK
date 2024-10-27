@@ -5,6 +5,7 @@ import Homepage from "./Homepage";
 import Menu from "./Menu.jsx"
 import { Navigate } from 'react-router-dom';
 import { useAuth } from './authContext.js';
+import Dashboard from "./Dashboard.jsx";
 
 const ProtectedRoute = ({ children }) => {
     const { isAuthenticated } = useAuth();
@@ -33,6 +34,10 @@ const routes = [
                 <Menu/>
             </ProtectedRoute>
         )
+    },
+    {
+        path:"/dashboard",
+        element: <Dashboard />
     }
 ]
 
