@@ -8,7 +8,7 @@ import { styled } from '@mui/material/styles';
 import LinearProgressBar from './components/LinearProgressBar';
 import { Link } from 'react-router-dom'
 import { BarChart } from '@mui/x-charts';
-
+import { useState, useEffect } from "react";
 function Dashboard(){
 
     const progress = 50;
