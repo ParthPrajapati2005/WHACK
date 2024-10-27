@@ -25,6 +25,31 @@ function BankAccounts(){
     return (
         <Container fluid className="bg-primary text-white min-vh-100 p-4">
             <h1 className="text-center mb-4">Bank Accounts</h1>
+            <Row>
+                <Col>
+                    <Table bordered hover variant="dark" className="text-center">
+                        <thead>
+                            <tr>
+                                <th>Bank Account</th>
+                                <th>Overdraft Limit</th>
+                                <th>Incentive</th>
+                                <th>Student Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {/* Display LISA accounts */}
+                            {banks.bank && banks.bank.map((account, index) => (
+                                <tr key={`bank-${index}`}>
+                                    <td>{account[0]}</td>
+                                    <td>{account[1]}</td>
+                                    <td>{account[2] || 'N/A'}</td>
+                                    <td>{account[3] || 'N/A'}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </Col>
+            </Row>
             <Row className="justify-content-center">
                 <Col md={8}>
                     <Table bordered hover variant="dark" className="text-center">
@@ -52,21 +77,7 @@ function BankAccounts(){
                     </Table>
                 </Col>
             </Row>
-            <Row>
-                <Col>
-                    <Table>
-                    <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Link</th>
-                                <th>Minimum Investment</th>
-                                <th>Interest Paid/Annual Fees</th>
-                            </tr>
-                        </thead>
-                    </Table>
-                </Col>
-            </Row>
         </Container>
-    );
+    );  
 }
 export default BankAccounts;
