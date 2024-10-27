@@ -16,6 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import StarIcon from '@mui/icons-material/Star'; // Example icon
 import FavoriteIcon from '@mui/icons-material/Favorite'; // Example icon
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'; // Example icon
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'; // Right arrow icon
 
 function Dashboard(){
 
@@ -129,11 +130,67 @@ function Dashboard(){
                 </div>
                 <h1 className='col-span-1'>$24,578</h1>
             </section>
-            <section className='bg-gray-600 rounded-lg shadow-xl row-span-1'>
-                <div className='p-3 flex flex-col justify-center text-2xl font-bold'>
-                    <p>Get more useful information here</p>
-                    <Link to='/'>For now there's nothing</Link>
-                </div>
+            <section className='bg-gray-600 rounded-lg shadow-xl row-span-2'>
+                <Typography variant="h6" className="mb-2"></Typography>
+                <Button
+                    variant="contained"
+                    color="black" // Changed to gray
+                    endIcon={<ArrowForwardIcon />}
+                    sx={{
+                        marginTop:'10%',
+                        marginLeft:'10%',
+                        width:'80%',
+                        height: '100px', // Increase height
+                        fontSize: '1.2rem', // Increase font size for better visibility
+                        justifyContent: 'space-between',
+                        backgroundColor: 'black', // Use a specific shade of gray
+                        '&:hover': {
+                            backgroundColor: 'gray.600', // Darken on hover
+                        },
+                    }}
+                >
+                    Action Button
+                </Button>
+
+                <Button
+                    variant="contained"
+                    color="gray" // Changed to gray
+                    endIcon={<ArrowForwardIcon />}
+                    sx={{
+                        marginTop:'10%',
+                        marginLeft:'10%',
+                        width:'80%',
+                        height: '100px', // Increase height
+                        fontSize: '1.2rem', // Increase font size for better visibility
+                        justifyContent: 'space-between',
+                        backgroundColor: 'black', // Use a specific shade of gray
+                        '&:hover': {
+                            backgroundColor: 'gray.600', // Darken on hover
+                        },
+                    }}
+                >
+                    Action Button
+                </Button>
+
+                <Button
+                    variant="contained"
+                    color="gray" // Changed to gray
+                    endIcon={<ArrowForwardIcon />}
+                    sx={{
+                        marginTop:'10%',
+                        marginLeft:'10%',
+                        width:'80%',
+                        height: '100px', // Increase height
+                        fontSize: '1.2rem', // Increase font size for better visibility
+                        justifyContent: 'space-between',
+                        backgroundColor: 'black', // Use a specific shade of gray
+                        '&:hover': {
+                            backgroundColor: 'gray.600', // Darken on hover
+                        },
+                    }}
+                >
+                    Action Button
+                </Button>
             </section>
         
             <section className='bg-gray-600 rounded-lg shadow-xl p-3'>

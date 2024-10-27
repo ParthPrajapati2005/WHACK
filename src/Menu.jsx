@@ -5,15 +5,19 @@ import { ReactComponent as AddBtn } from "./assets/addBtn.svg"
 import { ReactComponent as PenBtn } from "./assets/pen.svg"
 import { Modal, Form, Button }  from 'react-bootstrap';
 import { ReactComponent as BinBtn } from "./assets/bin.svg"
+import { PiArrowSquareInThin } from "react-icons/pi";
 
 function Menu(){
 
   const [actualData, setData] = useState(data);
+  
   const [newThing, setNew] = useState(null);
   const [show, setShow] = useState(false);
   const [name, setName] = useState('');
   const [amount, setAmount] = useState(0);
   const [type, setType] = useState('');
+  const [balance,setBalance] = useState(0)
+  const [showBalanceModal,setShowBalanceModal] = useState(false);
   const [loaded,setLoaded] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -60,8 +64,22 @@ function Menu(){
 
   const handleName = (e) => setName(e.target.value);
   const handleAmount = (e) => setAmount(e.target.value);
-  const handleType = (e) => setType(e.target.value);
+  const handleBalance = (e)=> setBalance(e.target.value);
 
+  const handleShowBalance = () => setShowBalanceModal(true);
+  const handleType = (e) => {
+    let tempType = e.target.value;
+    
+    setType(e.target.value)
+};
+const handleBalanceChange = () => {
+    setData({
+      ...actualData,
+      balance: balance,
+    });
+    setBalance(balance);
+    setShowBalanceModal(false);
+  };
   const handleNew = () => {
     setNew({nameData: name, amountData: amount});
   }
@@ -136,10 +154,11 @@ function Menu(){
       }
 
       getData()
+      setBalance(actualData.balance)
       setLoaded(true)
     }, [])
 
-    const balance =  actualData.balance;
+    
     
     let totalIncome = 0;
     let totalExpenses = 0;
@@ -208,6 +227,7 @@ function Menu(){
             <nav className="col-span-3 bg-blue-600 rounded-lg shadow-xl p-3 m-3 flex justify-between items-center">
               <div className="p-3">
                 <h1 className="text-4xl" id="balance">Balance: £{balance}</h1>
+              <button onClick={() => handleShowBalance()}><PenBtn /></button>
                 <h1 className="text-4xl" id="cashflow">Cashflow: £{cashflow}</h1>
               </div>
               <button className="p-3 hover:bg-blue-700 rounded-lg  transition duration-200" onClick={handleOpen}>
