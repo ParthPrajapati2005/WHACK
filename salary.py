@@ -59,6 +59,4 @@ def getSalary(location, degType):
         
         # Filter by location if specified
         if location is None or city_name == location:
-            print(f"Job Title: {job_title_name}, City: {city_name}, Predicted Salary: £{salary_prediction[0]:,.2f}")
-
-getSalary("London","law")
+            return f"£{salary_prediction[0]:,.2f}"

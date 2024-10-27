@@ -1,6 +1,6 @@
-import { ReactComponent as Settings} from './assets/settings.svg'
-import { ReactComponent as Notifications} from "./assets/notifications.svg"
-import { ReactComponent as BugReport} from "./assets/bug.svg"
+import { ReactComponent as Settings } from './assets/settings.svg';
+import { ReactComponent as Notifications } from "./assets/notifications.svg";
+import { ReactComponent as BugReport } from "./assets/bug.svg";
 import { PieChart } from '@mui/x-charts/PieChart';
 import { LinearProgress, Typography } from '@mui/material';
 import { useDrawingArea } from '@mui/x-charts/hooks';
@@ -18,18 +18,68 @@ function Dashboard(){
         textAnchor: 'middle',
         dominantBaseline: 'central',
         fontSize: 20,
-      }));
+    }));
 
     function PieCenterLabel({ children }) {
         const { width, height, left, top } = useDrawingArea();
         return (
-          <StyledText x={left + width / 2} y={top + height / 2}>
-            {children}
-          </StyledText>
+            <StyledText x={left + width / 2} y={top + height / 2}>
+                {children}
+            </StyledText>
         );
-      }
+    }
 
-    return(
+    const [open, setOpen] = useState(false);
+    const [newGoal, setNewGoal] = useState("");
+    const [monetaryValue, setMonetaryValue] = useState("");
+    const [selectedIcon, setSelectedIcon] = useState(null); // State for selected icon
+    const [goals, setGoals] = useState([]);
+    const [editIndex, setEditIndex] = useState(null);
+
+    const icons = [
+        { name: 'Star', component: <StarIcon /> },
+        { name: 'Favorite', component: <FavoriteIcon /> },
+        { name: 'Money', component: <MonetizationOnIcon /> },
+        // Add more icons as needed
+    ];
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => {
+        setOpen(false);
+        setNewGoal("");
+        setMonetaryValue("");
+        setSelectedIcon(null); // Reset selected icon
+        setEditIndex(null);
+    };
+
+    const handleAddGoal = () => {
+        if (newGoal.trim() && monetaryValue && selectedIcon) {
+            const updatedGoals = [...goals];
+            const goalData = { name: newGoal, value: monetaryValue, icon: selectedIcon };
+            if (editIndex !== null) {
+                updatedGoals[editIndex] = goalData; // Edit existing goal
+                setGoals(updatedGoals);
+            } else {
+                setGoals([...goals, goalData]); // Add new goal
+            }
+            handleClose();
+        }
+    };
+
+    const handleEditGoal = (index) => {
+        const goalToEdit = goals[index];
+        setNewGoal(goalToEdit.name);
+        setMonetaryValue(goalToEdit.value);
+        setSelectedIcon(goalToEdit.icon); // Set the selected icon
+        setEditIndex(index);
+        handleOpen();
+    };
+
+    const handleDeleteGoal = (index) => {
+        const updatedGoals = goals.filter((_, i) => i !== index);
+        setGoals(updatedGoals);
+    };
+    return (
         <div className="grid grid-cols-3 gap-3 p-3 bg-blue-950 h-screen w-screen text-white">
             <nav className="flex justify-between col-span-3 bg-gray-600 rounded-xl px-3 shadow-xl">
                 <div className="flex flex-col justify-center">
@@ -118,11 +168,59 @@ function Dashboard(){
             <section className="bg-gray-800 rounded-lg row-span-2">
                 7
             </section>
-            <footer className="bg-gray-800 rounded-lg col-span-3">
 
-            </footer> */}
+            {/* Modal for Adding/Editing a Goal */}
+            <Modal open={open} onClose={handleClose}>
+                <Box sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 300,
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    p: 4,
+                    borderRadius: 2,
+                    textAlign: 'center',
+                }}>
+                    <Typography variant="h6" component="h2">{editIndex !== null ? 'Edit Goal' : 'Add New Goal'}</Typography>
+                    <TextField
+                        label="Goal"
+                        variant="outlined"
+                        fullWidth
+                        value={newGoal}
+                        onChange={(e) => setNewGoal(e.target.value)}
+                        sx={{ my: 2 }}
+                    />
+                    <TextField
+                        label="Monetary Value"
+                        variant="outlined"
+                        fullWidth
+                        type="number"
+                        value={monetaryValue}
+                        onChange={(e) => setMonetaryValue(e.target.value)}
+                        sx={{ my: 2 }}
+                    />
+                    <Typography variant="subtitle1" sx={{ mt: 2 }}>Select Icon:</Typography>
+                    <div className="flex justify-around mt-2 mb-2">
+                        {icons.map((icon, index) => (
+                            <div
+                                key={index}
+                                className={`flex flex-col items-center cursor-pointer ${selectedIcon === icon.component ? 'text-blue-500' : 'text-gray-500'}`}
+                                onClick={() => setSelectedIcon(icon.component)}
+                            >
+                                {icon.component}
+                                <span className="text-xs">{icon.name}</span>
+                            </div>
+                        ))}
+                    </div>
+                    <Button variant="contained" color="primary" onClick={handleAddGoal}>
+                        {editIndex !== null ? 'Save Changes' : 'Save Goal'}
+                    </Button>
+                </Box>
+            </Modal>
         </div>
-    )
+    );
 }
 
-export default Dashboard
+export default Dashboard;
