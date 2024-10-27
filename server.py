@@ -78,8 +78,8 @@ def getIncome():
         other = 0
     debt = calculateTotalDebtAtEndOfGraduation(startYear,endYear,maintenance)
     mycol.update_one(
-        {"name": user},  # Filter by username
-        {"$set": {"debt": {"student" : debt} , "income": {"maintenance":maintenance/12, "job":job, "other":4*other}}}  # Set debt/income even if not already there
+        {"name": user},  # ilter by username
+        {"$set": {"debt": {"student" : debt} , "income": {"maintenance":maintenance/12, "job":job, "other":4*other}}}  #Set debt/income even if not already there
     )
     return jsonify({"income": (maintenance / 12) + job + 4 * other, "debt": debt}), 200
 
@@ -100,7 +100,7 @@ def getExpenses():
     if not other:
         other = 0
     mycol.update_one(
-        {"name": user},  # Filter by username
+        {"name": user},  #Filter by username
         {"$set": {"expenses":{"groceries":groceries*4, "rent":rent, "travel":travel*4, "hobbies":hobbies*4, "other":other*4}}}
     )
     return jsonify({"expenses":(groceries+travel+hobbies+other)*4+rent}),200
