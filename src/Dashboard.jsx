@@ -5,7 +5,7 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import LinearProgressBar from './components/LinearProgressBar';
 import { BarChart } from '@mui/x-charts';
 import { Typography, Modal, Box, TextField, Button, IconButton } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDrawingArea } from '@mui/x-charts/hooks';
 import { styled } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
@@ -15,6 +15,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite'; // Example icon
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'; // Example icon
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'; // Right arrow icon
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import axios from 'axios';
 
 function Dashboard(){
 
@@ -42,6 +43,12 @@ function Dashboard(){
     const [selectedIcon, setSelectedIcon] = useState(null); // State for selected icon
     const [goals, setGoals] = useState([]);
     const [editIndex, setEditIndex] = useState(null);
+
+    const [user, setUser] = useState('');
+    const [income, setIncome] = useState(0);
+    const [expenses, setExpenses] = useState(0);
+    const [debt, setDebt] = useState(0);
+    const [updated, setUpdated] = useState(false);
 
     const icons = [
         { name: 'Star', component: <StarIcon /> },
@@ -87,12 +94,35 @@ function Dashboard(){
         setGoals(updatedGoals);
     };
 
+    useEffect(() => {
+        const data = JSON.parse(localStorage.getItem('forDashboard')).user;
+        setUser(data.name);
+        let totalIncome = 0;
+        let totalExpenses = 0;
+        let totalDebt = 0;
+        console.log(data.income);
+        for(let key in data.income){
+            console.log(key, data.income[key]);
+            totalIncome+=parseInt(data.income[key]);
+        }
+        for(let key in data.expenses){
+            //console.log(key, data.expenses[key])
+            totalExpenses+=parseInt(data.expenses[key]);
+        }
+        for(let key in data.debt){
+            totalDebt+=parseInt(data.debt[key]);
+        }
+        setIncome(totalIncome);
+        setExpenses(totalExpenses);
+        setDebt(totalDebt);
+    }, [])
+
     return(
         <div className="grid grid-cols-3 gap-3 p-3 bg-blue-950 h-screen w-screen text-white">
             <nav className="flex justify-between col-span-3 bg-blue-700 rounded-xl px-3 shadow-xl">
                 <div className="flex flex-col justify-center">
                     <p className='font-extrabold text-2xl pt-2'>Future Self</p>
-                    <h2>Welcome back, username!</h2>
+                    <h2>Welcome back, {user} !</h2>
                 </div>
                 <div className='flex items-center justify-between gap-5'>
                     <button><BugReport /></button>
@@ -104,9 +134,9 @@ function Dashboard(){
                 <PieChart series={[
                     {
                         data:[
-                            {id:0, value:10},
-                            {id:1, value:15, label:'series B'},
-                            {id:2, value:25, label:'series C'},
+                            {id:0, value:income, label: 'Incomes'},
+                            {id:1, value:expenses, label:'Expenses'},
+                            {id:2, value:debt, label:'Debt'},
                         ],
                         innerRadius: 64,
                         outerRadius: 100,
@@ -195,7 +225,7 @@ function Dashboard(){
         
             <section className='bg-blue-700 rounded-lg shadow-xl p-3'>
                 <p className='flex justify-center col-span-3 pt-3 text-2xl font-bold'>My Expenses for June</p>
-                <BarChart xAxis={[{ scaleType: 'band', data: ['group A','group B', 'group C']}]}
+                <BarChart xAxis={[{ scaleType: 'band', data: ['Incomes','Expenses', 'Debt']}]}
                 series={[{ data: [4,3,5]}, {data: [1,6,3]}, {data: [2,5,6]}]}
                 width={500}
                 height={200}
