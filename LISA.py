@@ -34,8 +34,6 @@ def getLISA():
             # Append as a list of text items
             if name and link:
                 lisa_data.append([name, link, minimum_investment, interest_paid])
-
-    print(lisa_data)
     return lisa_data
 
 getLISA()
