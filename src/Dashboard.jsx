@@ -5,7 +5,7 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import LinearProgressBar from './components/LinearProgressBar';
 import { BarChart } from '@mui/x-charts';
 import { Typography, Modal, Box, TextField, Button, IconButton } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDrawingArea } from '@mui/x-charts/hooks';
 import { styled } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
@@ -15,6 +15,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite'; // Example icon
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'; // Example icon
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'; // Right arrow icon
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import axios from 'axios';
 
 function Dashboard(){
 
@@ -86,6 +87,19 @@ function Dashboard(){
         const updatedGoals = goals.filter((_, i) => i !== index);
         setGoals(updatedGoals);
     };
+
+    useEffect(() => {
+        const fetchData = async () =>{
+            try{
+                console.log("2");
+                const response = await axios.get('http://127.0.0.1:5000/userobject');
+                console.log(response);
+            } catch(error){
+                return error;
+            }
+        }
+        fetchData();
+    }, [])
 
     return(
         <div className="grid grid-cols-3 gap-3 p-3 bg-blue-950 h-screen w-screen text-white">
