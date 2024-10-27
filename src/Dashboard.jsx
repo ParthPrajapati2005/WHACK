@@ -2,12 +2,20 @@ import { ReactComponent as Settings} from './assets/settings.svg'
 import { ReactComponent as Notifications} from "./assets/notifications.svg"
 import { ReactComponent as BugReport} from "./assets/bug.svg"
 import { PieChart } from '@mui/x-charts/PieChart';
-import { LinearProgress, Typography } from '@mui/material';
-import { useDrawingArea } from '@mui/x-charts/hooks';
-import { styled } from '@mui/material/styles';
+import { LinearProgress } from '@mui/material';
 import LinearProgressBar from './components/LinearProgressBar';
 import { Link } from 'react-router-dom'
 import { BarChart } from '@mui/x-charts';
+
+import { Typography, Modal, Box, TextField, Button, IconButton } from '@mui/material';
+import { useState } from 'react';
+import { useDrawingArea } from '@mui/x-charts/hooks';
+import { styled } from '@mui/material/styles';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import StarIcon from '@mui/icons-material/Star'; // Example icon
+import FavoriteIcon from '@mui/icons-material/Favorite'; // Example icon
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'; // Example icon
 
 function Dashboard(){
 
@@ -28,6 +36,57 @@ function Dashboard(){
           </StyledText>
         );
       }
+    
+    const [open, setOpen] = useState(false);
+    const [newGoal, setNewGoal] = useState("");
+    const [monetaryValue, setMonetaryValue] = useState("");
+    const [selectedIcon, setSelectedIcon] = useState(null); // State for selected icon
+    const [goals, setGoals] = useState([]);
+    const [editIndex, setEditIndex] = useState(null);
+
+    const icons = [
+        { name: 'Star', component: <StarIcon /> },
+        { name: 'Favorite', component: <FavoriteIcon /> },
+        { name: 'Money', component: <MonetizationOnIcon /> },
+        // Add more icons as needed
+    ];
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => {
+        setOpen(false);
+        setNewGoal("");
+        setMonetaryValue("");
+        setSelectedIcon(null); // Reset selected icon
+        setEditIndex(null);
+    };
+
+    const handleAddGoal = () => {
+        if (newGoal.trim() && monetaryValue && selectedIcon) {
+            const updatedGoals = [...goals];
+            const goalData = { name: newGoal, value: monetaryValue, icon: selectedIcon };
+            if (editIndex !== null) {
+                updatedGoals[editIndex] = goalData; // Edit existing goal
+                setGoals(updatedGoals);
+            } else {
+                setGoals([...goals, goalData]); // Add new goal
+            }
+            handleClose();
+        }
+    };
+
+    const handleEditGoal = (index) => {
+        const goalToEdit = goals[index];
+        setNewGoal(goalToEdit.name);
+        setMonetaryValue(goalToEdit.value);
+        setSelectedIcon(goalToEdit.icon); // Set the selected icon
+        setEditIndex(index);
+        handleOpen();
+    };
+
+    const handleDeleteGoal = (index) => {
+        const updatedGoals = goals.filter((_, i) => i !== index);
+        setGoals(updatedGoals);
+    };
 
     return(
         <div className="grid grid-cols-3 gap-3 p-3 bg-blue-950 h-screen w-screen text-white">
@@ -76,13 +135,7 @@ function Dashboard(){
                     <Link to='/'>For now there's nothing</Link>
                 </div>
             </section>
-            <section className='bg-gray-600 rounded-lg shadow-xl p-3'>
-                <p>Goals</p>
-                <ul>
-                    <li>Goal 1</li>
-                    <li>Goal 2</li>
-                </ul>
-            </section>
+        
             <section className='bg-gray-600 rounded-lg shadow-xl p-3'>
                 <p className='flex justify-center'>My Expenses for June</p>
                 <BarChart xAxis={[{ scaleType: 'band', data: ['group A','group B', 'group C']}]}
@@ -91,12 +144,93 @@ function Dashboard(){
                 height={200}
                 />
             </section>
-            <section className='bg-gray-600 rounded-lg shadow-xl p-3'>
 
+            <section className="bg-gray-700 rounded-lg shadow-xl p-4 flex flex-col justify-center">
+                <h2 className="text-lg font-bold mb-2">Your Goals</h2>
+                <div className="grid grid-cols-3 grid-rows-2 gap-3 w-full h-full">
+                    {goals.map((goal, index) => (
+                        <div key={index} className="flex flex-col items-center justify-center bg-gray-600 rounded-lg p-4 text-center shadow-md">
+                            <div>{goal.icon} {/* Display selected icon */}</div>
+                            <div>{goal.name}</div>
+                            <div>${goal.value}</div>
+                            <div className="flex gap-2 mt-2">
+                                <IconButton onClick={() => handleEditGoal(index)} size="small">
+                                    <EditIcon fontSize="small" style={{ color: 'white' }} />
+                                </IconButton>
+                                <IconButton onClick={() => handleDeleteGoal(index)} size="small">
+                                    <DeleteIcon fontSize="small" style={{ color: 'white' }} />
+                                </IconButton>
+                            </div>
+                        </div>
+                    ))}
+                    <div
+                        className="flex items-center justify-center bg-gray-600 bg-opacity-50 border-2 border-dashed border-gray-400 rounded-lg p-4 text-center cursor-pointer"
+                        onClick={handleOpen}
+                    >
+                        + Add Goal
+                    </div>
+                </div>
             </section>
+
+            {/* Modal for Adding/Editing a Goal */}
+            <Modal open={open} onClose={handleClose}>
+                <Box sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 300,
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    p: 4,
+                    borderRadius: 2,
+                    textAlign: 'center',
+                }}>
+                    <Typography variant="h6" component="h2">{editIndex !== null ? 'Edit Goal' : 'Add New Goal'}</Typography>
+                    <TextField
+                        label="Goal"
+                        variant="outlined"
+                        fullWidth
+                        value={newGoal}
+                        onChange={(e) => setNewGoal(e.target.value)}
+                        sx={{ my: 2 }}
+                    />
+                    <TextField
+                        label="Monetary Value"
+                        variant="outlined"
+                        fullWidth
+                        type="number"
+                        value={monetaryValue}
+                        onChange={(e) => setMonetaryValue(e.target.value)}
+                        sx={{ my: 2 }}
+                    />
+                    <Typography variant="subtitle1" sx={{ mt: 2 }}>Select Icon:</Typography>
+                    <div className="flex justify-around mt-2 mb-2">
+                        {icons.map((icon, index) => (
+                            <div
+                                key={index}
+                                className={`flex flex-col items-center cursor-pointer ${selectedIcon === icon.component ? 'text-blue-500' : 'text-gray-500'}`}
+                                onClick={() => setSelectedIcon(icon.component)}
+                            >
+                                {icon.component}
+                                <span className="text-xs">{icon.name}</span>
+                            </div>
+                        ))}
+                    </div>
+                    <Button variant="contained" color="primary" onClick={handleAddGoal}>
+                        {editIndex !== null ? 'Save Changes' : 'Save Goal'}
+                    </Button>
+                </Box>
+            </Modal>
+
+
             <footer className='col-span-3 bg-gray-600 rounded-lg shadow-xl p-3'>
 
             </footer>
+
+
+
+
             {/* <section className="bg-gray-800 row-span-3 rounded-lg">
                 1
             </section>
