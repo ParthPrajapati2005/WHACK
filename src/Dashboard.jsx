@@ -225,7 +225,7 @@ function Dashboard(){
         
             <section className='bg-blue-700 rounded-lg shadow-xl p-3'>
                 <p className='flex justify-center col-span-3 pt-3 text-2xl font-bold'>My Expenses for June</p>
-                <BarChart xAxis={[{ scaleType: 'band', data: ['group A','group B', 'group C']}]}
+                <BarChart xAxis={[{ scaleType: 'band', data: ['Incomes','Expenses', 'Debt']}]}
                 series={[{ data: [4,3,5]}, {data: [1,6,3]}, {data: [2,5,6]}]}
                 width={500}
                 height={200}
