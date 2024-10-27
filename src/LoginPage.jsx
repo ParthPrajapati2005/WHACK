@@ -41,16 +41,10 @@ function LoginPage() {
             // Clear form data on success
             setFormData({ name: '', pass: '' });
 
-            //NOW GO TO MENU PAGE
-
-
-
         } catch (error) {
             console.log("Error in post request:", error.message);
         }
 
-
-        //LOGIN HERE
     };
 
     const handleInputChange = (e) => {
@@ -94,7 +88,7 @@ function LoginPage() {
                                 onChange={handleInputChange}
                             />
 
-                            <Button className='w-100 mb-4' size='md' type="">Sign Up</Button>
+                            <Button className='w-100 mb-4' size='md' type="">Log In</Button>
                         </form>
                     </MDBCardBody>
                 </MDBCard>

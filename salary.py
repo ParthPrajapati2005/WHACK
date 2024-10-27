@@ -57,6 +57,5 @@ def getSalary(location, degType):
         job_title_name = label_encoders['job_title'].inverse_transform([int(row['job_title'])])[0]
         salary_prediction = model.predict([[row['category'], row['city'], row['job_title'], row['job_type'], row['state']]])
         
-        # Filter by location if specified
-        if location is None or city_name == location:
-            return salary_prediction[0]
+        #
+    return salary_prediction[0]
