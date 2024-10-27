@@ -115,11 +115,12 @@ def getBankData():
 
 @app.route('/suggested',methods=['POST'])
 def getSuggested():
-    theUser = mycol.find_one({"username": user})
-    income = 0
-    for i in theUser["income"].values():
-        income+=i
-    return jsonify({"spending":suggestSpendingMl(income)})
+    # print("IN SUGGESTED")
+    data = request.get_json()
+    print(data)
+    # print("My income",data.get("income"))
+    return jsonify(suggestSpendingMl(int(data['income']))),200
+
 
 @app.route('/future', methods=['POST'])
 def futurePlanner():

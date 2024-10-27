@@ -7,6 +7,7 @@ import { Modal, Form, Button }  from 'react-bootstrap';
 import { ReactComponent as BinBtn } from "./assets/bin.svg"
 import { PiArrowSquareInThin } from "react-icons/pi";
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 
 function Menu(){
@@ -100,7 +101,6 @@ const handleBalanceChange = () => {
         axios.post("http://127.0.0.1:5000/setuserobject", { "userObj": actualData });
       }
       
-      
   }, [actualData]); // Triggers the request after actualData updates
 
   useEffect(() => {
@@ -116,7 +116,7 @@ const handleBalanceChange = () => {
           ...actualData,
           income: {
             ...actualData.income,
-            [key]: value
+            [key]: Number(value)
           }
         })
 
@@ -126,7 +126,7 @@ const handleBalanceChange = () => {
           ...actualData,
           expenses: {
             ...actualData.expenses,
-            [key]: value
+            [key]: Number(value)
           }
         })
 
@@ -136,7 +136,7 @@ const handleBalanceChange = () => {
           ...actualData,
           debt: {
             ...actualData.debt,
-            [key]: value
+            [key]: Number(value)
           }
         })
 
@@ -144,14 +144,14 @@ const handleBalanceChange = () => {
       default:
         console.log("not found");
     }
-    navigate("/ml")
+    
     }, [newThing])
 
 
     useEffect(() => {
       async function getData(){
+        let storedName = localStorage.getItem("user")
         const data = await axios.post("http://127.0.0.1:5000/userobject");
-        
         setData(data.data.user)
       }
 
@@ -166,14 +166,16 @@ const handleBalanceChange = () => {
     let totalExpenses = 0;
     for(let key in actualData.income){
         //console.log(key, data.income[key])
-        totalIncome+=actualData.income[key];
+        totalIncome+=parseInt(actualData.income[key]);
     }
     for(let key in actualData.expenses){
         //console.log(key, data.expenses[key])
-        totalExpenses+=actualData.expenses[key];
+        totalExpenses+=parseInt(actualData.expenses[key]);
     }
     
-    let cashflow = totalIncome - totalExpenses;
+
+    localStorage.setItem("totalIncome",totalIncome)
+    let cashflow = Number(totalIncome) - Number(totalExpenses);
     //console.log(data);
 
 
@@ -194,7 +196,7 @@ const handleBalanceChange = () => {
                                 type="number"
                                 placeholder="Enter new balance"
                                 value={balance}
-                                onChange={(e) => setBalance(+e.target.value)}
+                                onChange={(e) => setBalance(e.target.value)}
                             />
                         </Form.Group>
                     </Form>
@@ -262,9 +264,11 @@ const handleBalanceChange = () => {
                 </span></h1>
                 <h1 className="text-4xl" id="cashflow">Cashflow: £{cashflow}</h1>
               </div>
-              <button className="p-3 hover:bg-blue-700 rounded-lg  transition duration-200" onClick={handleOpen}>
-                <p className="text-2xl flex gap-5 items-center">Add a new entry<span><AddBtn /></span></p>
-              </button>
+              <div className="flex gap-3">
+                <button className="p-3 hover:bg-red-700 rounded-lg transition duration-200 px-5 font-bold text-xl" onClick={() => navigate("/dashboard")}>Go back</button>
+                <button className="p-3 hover:bg-green-700 rounded-lg  transition duration-200 font-bold text-xl" onClick={handleOpen}>Add a new entry</button>
+              </div>
+              
             </nav>
             <div id="incomeCol" className="col-start-1 col-span-1 bg-blue-600 rounded-lg shadow-xl p-3 m-3">
               <h1 className="text-2xl">Monthly Income</h1>
