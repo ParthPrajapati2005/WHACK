@@ -99,11 +99,7 @@ def getData():
 
 @app.route('/banks', methods=['POST'])
 def getBankData():
-    return jsonify({"bank":getBank()})
-
-@app.route('/lisa', methods=['POST'])
-def getLisaData():
-    return jsonify({"LISA":getLISA()})
+    return jsonify({"bank":getBank(),"LISA":getLISA()})
 
 @app.route('/suggested',methods=['POST'])
 def getSuggested():
@@ -120,7 +116,15 @@ def futurePlanner():
     time = data.get('time')
     degree = data.get('degree')
     county = data.get('state')
-    return jsonify({"debt":calculateTotalDebtAtEndOfGraduation(startYear,startYear+time),"salary":getSalary(degree,county)})
+    salary = getSalary(degree,county)
+    debt = calculateTotalDebtAtEndOfGraduation(startYear,startYear+time)
+    if salary < 27295:
+        years = "You won't have to pay back loans at this wage"
+    else:
+        years = "You pay back £" +str((salary-27295)*1.09)+" a year"
+    if salary>28470:
+        debt *= 1 + (3 * (min(salary,51245)-28470)/(51245-28470))/100
+    return jsonify({"debt":debt,"salary":salary,"years":years})
 
 if __name__ == "__main__":
     app.run(debug=True)
