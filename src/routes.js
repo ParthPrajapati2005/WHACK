@@ -6,6 +6,7 @@ import Menu from "./Menu.jsx"
 import { Navigate } from 'react-router-dom';
 import { useAuth } from './authContext.js';
 import Dashboard from "./Dashboard.jsx";
+import BankAccounts from "./BankAccounts.jsx"
 
 const ProtectedRoute = ({ children }) => {
     const { isAuthenticated } = useAuth();
@@ -38,6 +39,10 @@ const routes = [
     {
         path:"/dashboard",
         element: <Dashboard />
+    },
+    {
+        path:"/bankaccounts",
+        element: <BankAccounts/>
     }
 ]
 

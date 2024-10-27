@@ -146,7 +146,9 @@ def getData():
 
 @app.route('/banks', methods=['POST'])
 def getBankData():
-    return jsonify({"bank":getBank(), "LISA":getLISA()})
+    lisa_data = getLISA() 
+    lisa_data_json = [list(row) for row in lisa_data]
+    return jsonify({"bank":getBank(), "LISA":lisa_data_json})
 
 @app.route('/suggested',methods=['POST'])
 def getSuggested():
