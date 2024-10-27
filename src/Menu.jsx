@@ -158,13 +158,13 @@ function Menu(){
 
 
     return(
-        <>
+        <div className="">
           <div className="gradient-bg">
-          <Modal className="flex flex-col" show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Insert the data</Modal.Title>
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton />
+              <Modal.Title className="flex justify-center items-center pt-3">Insert the data</Modal.Title>
               <Modal.Body>
-                <Form>
+                <Form className="flex flex-col gap-3">
                   <Form.Group>
                     <Form.Label>Name</Form.Label>
                     <Form.Control
@@ -173,6 +173,8 @@ function Menu(){
                       value={name}
                       onChange={handleName} 
                       />
+                  </Form.Group>
+                  <Form.Group>
                     <Form.Label>Amount</Form.Label>
                     <Form.Control
                       type="text"
@@ -180,6 +182,9 @@ function Menu(){
                       value={amount}
                       onChange={handleAmount}
                        />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label>Select the type</Form.Label>
                     <Form.Select onChange={handleType} value={type}>
                       <option>Choose the type</option>
                       <option value="1">Income</option>
@@ -200,17 +205,18 @@ function Menu(){
                   Save Changes
                 </Button>
               </Modal.Footer>
-            </Modal.Header>
 
           </Modal>
 
-          <div className="grid-container">
           
-          <div className="top-row"><div className="text-4xl " id="balance">Balance: £{balance}</div><div className="text-4xl" id="cashflow">Cashflow: £{cashflow}</div></div>
+          <div className="top-row text-white">
+            <div className="text-4xl" id="balance">Balance: £{balance}</div>
+            <div className="text-4xl" id="cashflow">Cashflow: £{cashflow}</div>
+          </div>
             
             
 
-            <div className="bottom-row-item">Monthly Income 
+            <div className="bottom-row-item text-white">Monthly Income 
                 <div className="item-container">
                     {Object.entries(actualData.income).map(([key, value]) => (
                         <div key={key} className="income-item flex justify-between">
@@ -224,7 +230,7 @@ function Menu(){
                 </div>
             </div>
 
-            <div className="bottom-row-item">Monthly Expenses
+            <div className="bottom-row-item text-white">Monthly Expenses
             <div className="item-container">
                     {Object.entries(actualData.expenses).map(([key, value]) => (
                         <div key={key} className="expense-item">
@@ -238,7 +244,7 @@ function Menu(){
                 </div>
             </div>
             
-            <div className="bottom-row-item">Debts
+            <div className="bottom-row-item text-white">Debts
             <div className="item-container">
                     {Object.entries(actualData.debt).map(([key, value]) => (
                         <div key={key} className="expense-item">
@@ -255,8 +261,8 @@ function Menu(){
                   
          </div>
           <button className="absolute bottom-14 right-14 scale-150 hover:fill-[#2196f3]" onClick={handleOpen}><AddBtn /></button>
-          </div>
-        </>
+        </div>
+        // </div>
     )
 
 
