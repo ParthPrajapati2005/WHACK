@@ -175,8 +175,37 @@ const handleBalanceChange = () => {
     //console.log(data);
 
 
+                        
+    
     return(
         <div className="bg-blue-900 grid grid-cols-3 grid-rows-[1fr_3fr] h-screen text-white">
+          {/* Balance Update Modal */}
+          <Modal show={showBalanceModal} onHide={() => setShowBalanceModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Update Balance</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group>
+                            <Form.Label>New Balance</Form.Label>
+                            <Form.Control
+                                type="number"
+                                placeholder="Enter new balance"
+                                value={balance}
+                                onChange={(e) => setBalance(e.target.value)}
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowBalanceModal(false)}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleBalanceChange}>
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+          </Modal>
           <Modal show={show} onHide={handleClose}>
                <Modal.Header closeButton />
                  <Modal.Title className="flex justify-center items-center pt-3">Insert the data</Modal.Title>
@@ -226,8 +255,8 @@ const handleBalanceChange = () => {
 
             <nav className="col-span-3 bg-blue-600 rounded-lg shadow-xl p-3 m-3 flex justify-between items-center">
               <div className="p-3">
-                <h1 className="text-4xl" id="balance">Balance: £{balance}</h1>
-              <button onClick={() => handleShowBalance()}><PenBtn /></button>
+                <h1 className="text-4xl" id="balance">Balance: £{balance}<span><button onClick={() => handleShowBalance()}><PenBtn /></button>
+                </span></h1>
                 <h1 className="text-4xl" id="cashflow">Cashflow: £{cashflow}</h1>
               </div>
               <button className="p-3 hover:bg-blue-700 rounded-lg  transition duration-200" onClick={handleOpen}>
