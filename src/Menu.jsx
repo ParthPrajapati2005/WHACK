@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
 import './CSS/Menu.css';
-import data from "./menuDataset";
+import axios from 'axios';
+import data from './menuDataset'
 import { ReactComponent as AddBtn } from "./assets/addBtn.svg"
 import { ReactComponent as PenBtn } from "./assets/pen.svg"
 import { Modal, Form, Button }  from 'react-bootstrap';
 import { ReactComponent as BinBtn } from "./assets/bin.svg"
 
 function Menu(){
-  
+
   const [actualData, setData] = useState(data);
-
-
   const [newThing, setNew] = useState(null);
   const [show, setShow] = useState(false);
   const [name, setName] = useState('');
@@ -20,6 +19,7 @@ function Menu(){
   const [newBalance, setNewBalance] = useState(0);
 
   
+  const [loaded,setLoaded] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleOpen = (pen, key, value, type) => {
@@ -79,6 +79,15 @@ function Menu(){
   }
 
   useEffect(() => {
+       // Ensures post request is only triggered on a change
+      if(loaded){
+        axios.post("http://127.0.0.1:5000/setuserobject", { "userObj": actualData });
+      }
+      
+      
+  }, [actualData]); // Triggers the request after actualData updates
+
+  useEffect(() => {
 
     if(!newThing) return;  
     const key = newThing.nameData;
@@ -86,6 +95,8 @@ function Menu(){
 
     switch(type){
       case "1":
+
+
         setData({
           ...actualData,
           income: {
@@ -93,6 +104,7 @@ function Menu(){
             [key]: value
           }
         })
+
       break;
       case "2":
         setData({
@@ -102,6 +114,7 @@ function Menu(){
             [key]: value
           }
         })
+
       break;
       case "3":
         setData({
@@ -111,6 +124,7 @@ function Menu(){
             [key]: value
           }
         })
+
       break;
       default:
         console.log("not found");
@@ -119,20 +133,30 @@ function Menu(){
     }, [newThing])
 
 
-    const balance =  data.balance;
+    useEffect(() => {
+      async function getData(){
+        const data = await axios.post("http://127.0.0.1:5000/userobject");
+        
+        setData(data.data.user)
+      }
+
+      getData()
+      setLoaded(true)
+    }, [])
+
+    const balance =  actualData.balance;
     
     let totalIncome = 0;
     let totalExpenses = 0;
-    for(let key in data.income){
+    for(let key in actualData.income){
         //console.log(key, data.income[key])
-        totalIncome+=data.income[key];
+        totalIncome+=actualData.income[key];
     }
-    for(let key in data.expenses){
+    for(let key in actualData.expenses){
         //console.log(key, data.expenses[key])
-        totalExpenses+=data.expenses[key];
+        totalExpenses+=actualData.expenses[key];
     }
-    //console.log(totalIncome)
-    //console.log(totalExpenses)
+    
     let cashflow = totalIncome - totalExpenses;
     //console.log(data);
 

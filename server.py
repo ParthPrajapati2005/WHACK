@@ -39,13 +39,14 @@ def register():
         return jsonify({"error":"Username already taken"},),200
 
     myTempUser = {"name" : username, "password" : password,
-                  "debt": {"student" : 0} , "income": {"maintenance":0, "job":0, "other":0},
-                  "expenses":{"groceries":0, "rent":0, "travel":0, "hobbies":0, "other":0}}
+                  "debt": {} , "income": {},
+                  "expenses":{}, "balance":0}
     mycol.insert_one(myTempUser)
     return jsonify({"message":"New user added"}),200
 
 @app.route('/login', methods=['POST'])
 def login():
+    global user
     data=request.get_json()
 
     username = data.get('username')
@@ -78,10 +79,37 @@ def getIncome():
         other = 0
     debt = calculateTotalDebtAtEndOfGraduation(startYear,endYear,maintenance)
     mycol.update_one(
-        {"name": user},  # Filter by username
-        {"$set": {"debt": {"student" : debt} , "income": {"maintenance":maintenance/12, "job":job, "other":4*other}}}  # Set debt/income even if not already there
+        {"name": user},  # ilter by username
+        {"$set": {"debt": {"student" : debt} , "income": {"maintenance":maintenance/12, "job":job, "other":4*other}}}  #Set debt/income even if not already there
     )
     return jsonify({"income": (maintenance / 12) + job + 4 * other, "debt": debt}), 200
+
+
+@app.route('/userobject', methods=['POST'])
+def getUserObject():
+    x = mycol.find_one({"name" : user})
+    print("I AM USING USER ", user)
+    print("I GOT USER : ",x)
+
+    if x and "_id" in x:
+        x["_id"] = str(x["_id"])
+
+    return jsonify({"user": x})
+
+@app.route('/setuserobject', methods=['POST'])
+def setUserObject():
+    data = request.get_json()
+    x = data.get('userObj')
+
+    del x['_id']
+
+    mycol.update_one(
+        {"name": user},  # Filter by username
+        {"$set": x}
+    )
+
+    return jsonify({"message":"recieved"}), 200
+
 
 @app.route('/expenses', methods=['POST'])
 def getExpenses():
@@ -100,7 +128,7 @@ def getExpenses():
     if not other:
         other = 0
     mycol.update_one(
-        {"name": user},  # Filter by username
+        {"name": user},  #Filter by username
         {"$set": {"expenses":{"groceries":groceries*4, "rent":rent, "travel":travel*4, "hobbies":hobbies*4, "other":other*4}}}
     )
     return jsonify({"expenses":(groceries+travel+hobbies+other)*4+rent}),200
