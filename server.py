@@ -97,6 +97,13 @@ def getData():
         return jsonify({"message":"User not found"},status=404),404
     return jsonify(theUser,status=200),200
 
+@app.route('/homepage', methods=['POST'])
+def getDataNoName():
+    theUser = mycol.find_one({"username": user})
+    if theUser == None:
+        return jsonify({"message":"User not found"},status=404),404
+    return jsonify(theUser,status=200),200
+
 @app.route('/banks', methods=['POST'])
 def getBankData():
     return jsonify({"bank":getBank(),"LISA":getLISA()})
