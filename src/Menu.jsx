@@ -6,8 +6,6 @@ import { ReactComponent as AddBtn } from "./assets/addBtn.svg"
 import { ReactComponent as PenBtn } from "./assets/pen.svg"
 import { Modal, Form, Button }  from 'react-bootstrap';
 import { ReactComponent as BinBtn } from "./assets/bin.svg"
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
 
 function Menu(){
 
@@ -32,7 +30,7 @@ function Menu(){
   const handleRemove = (key, type) => {
 
     const keyToRemove = key;
-
+    
     switch(type){
       case '1':
         const { [keyToRemove]: unused1, ...updatedIncome1 } = actualData.income;
@@ -49,11 +47,14 @@ function Menu(){
           })
       break;
       case '3':
-        const { [keyToRemove]: unused3, ...updatedIncome3 } = actualData.expenses;
+        const { [keyToRemove]: unused3, ...updatedIncome3 } = actualData.debt;
         setData({
           ...actualData,
-          expenses: updatedIncome3
+          debt: updatedIncome3
           })
+      break;
+      default:
+        console.log('error');
     }
   }
   
@@ -91,7 +92,6 @@ function Menu(){
 
     switch(type){
       case "1":
-
 
         setData({
           ...actualData,
@@ -193,7 +193,10 @@ function Menu(){
                 <Button variant="secondary" onClick={handleClose}>
                   Close
                 </Button>
-                <Button variant="primary" onClick={handleNew}>
+                <Button variant="primary" onClick={() => {
+                  handleNew()
+                  handleClose()
+                }}>
                   Save Changes
                 </Button>
               </Modal.Footer>
@@ -201,8 +204,6 @@ function Menu(){
 
           </Modal>
 
-          
-          <Carousel responsive={responsive}>
           <div className="grid-container">
           
           <div className="top-row"><div className="text-4xl " id="balance">Balance: £{balance}</div><div className="text-4xl" id="cashflow">Cashflow: £{cashflow}</div></div>
@@ -230,7 +231,7 @@ function Menu(){
                             {key}: £{value}
                             <div>
                               <button onClick={() => handleOpen('pen', key, value, '2')}><PenBtn /></button>
-                              <button><BinBtn /></button>
+                              <button onClick={() => handleRemove(key, '2')}><BinBtn /></button>
                             </div>
                         </div>
                     ))}
@@ -244,7 +245,7 @@ function Menu(){
                             {key}: £{value}
                             <div>
                               <button onClick={() => handleOpen('pen', key, value, '3')}><PenBtn /></button>
-                              <button><BinBtn /></button>
+                              <button onClick={() => handleRemove(key, '3')}><BinBtn /></button>
                             </div>
                         </div>
                     ))}
@@ -253,7 +254,6 @@ function Menu(){
 
                   
          </div>
-         </Carousel> 
           <button className="absolute bottom-14 right-14 scale-150 hover:fill-[#2196f3]" onClick={handleOpen}><AddBtn /></button>
           </div>
         </>
