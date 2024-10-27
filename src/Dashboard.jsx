@@ -164,6 +164,7 @@ function Dashboard(){
                     variant="contained"
                     color="black" // Changed to gray
                     endIcon={<ArrowForwardIcon />}
+                    onClick={() => navigate('/timemachine')}
                     sx={{
                         marginTop:'15%',
                         marginLeft:'10%',

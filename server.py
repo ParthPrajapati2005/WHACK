@@ -126,17 +126,17 @@ def getSuggested():
 def futurePlanner():
     data = request.get_json()
     startYear = data.get('start')
-    time = data.get('time')
-    degree = data.get('degree')
-    county = data.get('state')
+    time = data.get('end')
+    degree = data.get('degreeType')
+    county = data.get('counties')
+    maintenance = data.get('maintenance')
     salary = getSalary(degree,county)
-    debt = calculateTotalDebtAtEndOfGraduation(startYear,startYear+time)
+    debt = calculateTotalDebtAtEndOfGraduation(int(startYear),int(time), int(maintenance))
     if salary < 27295:
         years = "You won't have to pay back loans at this wage"
     else:
         years = "You pay back £" +str((salary-27295)*1.09)+" a year"
-    if salary>28470:
-        debt *= 1 + (3 * (min(salary,51245)-28470)/(51245-28470))/100
+  
     return jsonify({"debt":debt,"salary":salary,"years":years})
 
 if __name__ == "__main__":

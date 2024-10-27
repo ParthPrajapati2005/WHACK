@@ -8,6 +8,7 @@ import { useAuth } from './authContext.js';
 import Dashboard from "./Dashboard.jsx";
 import BankAccounts from "./BankAccounts.jsx"
 import MachineLearning from "./MachineLearning.jsx";
+import TimeMachine from "./TimeMachine.jsx";
 const ProtectedRoute = ({ children }) => {
     const { isAuthenticated } = useAuth();
 
@@ -47,6 +48,10 @@ const routes = [
     {
         path:"/bankaccounts",
         element: <BankAccounts/>
+    },
+    {
+        path:"/timemachine",
+        element: <TimeMachine/>
     }
 ]
 
