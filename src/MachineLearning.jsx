@@ -4,7 +4,9 @@ import defaultData from "./menuDataset.js"
 function MachineLearning(){
     const [income,setIncome] = useState(0);
     const [actualData,setData] = useState(defaultData);
+    const [called,setCalled] = useState(false)
     useEffect(() => {
+        if (called) return;
         async function getData(){
             const storedName = localStorage.getItem("name");
             console.log("stored name ",storedName)
@@ -13,13 +15,14 @@ function MachineLearning(){
           setData(data.data.user)
         }
   
-        getData()
+        //getData()
         console.log(actualData)
         let  total =0;
         for(let key in actualData.income){
             total += actualData.income[key];
         }
         setIncome(total);
+        setCalled(true)
       }, [])
 
     //   useEffect(() => {

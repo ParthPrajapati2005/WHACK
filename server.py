@@ -92,10 +92,13 @@ def setUserObject():
 def getData():
     data = request.get_json()
     username = data.get('username')
+    print(f"Username: {username}")
     theUser = mycol.find_one({"username": username})
+    print(f"The user {theUser}")
     if theUser == None:
+        print("None found")
         return jsonify({"message":"User not found"}),200
-    return jsonify(theUser,status=200),200
+    return jsonify(theUser),200
 
 @app.route('/getDataNoName', methods=['POST'])
 def getDataNoName():
@@ -106,7 +109,9 @@ def getDataNoName():
 
 @app.route('/banks', methods=['POST'])
 def getBankData():
-    return jsonify({"bank":getBank(),"LISA":getLISA()})
+    lisa_data = getLISA() 
+    lisa_data_json = [list(row) for row in lisa_data]
+    return jsonify({"bank":getBank(), "LISA":lisa_data_json})
 
 @app.route('/suggested',methods=['POST'])
 def getSuggested():

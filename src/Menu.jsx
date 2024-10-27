@@ -67,11 +67,10 @@ function Menu(){
 
   const handleName = (e) => setName(e.target.value);
   const handleAmount = (e) => setAmount(e.target.value);
-  const handleBalance = (e)=> setBalance(e.target.value);
+  const handleBalance = (e)=> setBalance(+e.target.value);
 
   const handleShowBalance = () => setShowBalanceModal(true);
   const handleType = (e) => {
-    let tempType = e.target.value;
     
     setType(e.target.value)
 };
@@ -80,7 +79,7 @@ const handleBalanceChange = () => {
       ...actualData,
       balance: balance,
     });
-    setBalance(balance);
+    setBalance(+balance);
     setShowBalanceModal(false);
   };
   const handleNew = () => {
@@ -157,7 +156,7 @@ const handleBalanceChange = () => {
       }
 
       getData()
-      setBalance(actualData.balance)
+      setBalance(+actualData.balance)
       setLoaded(true)
     }, [])
 
@@ -195,7 +194,7 @@ const handleBalanceChange = () => {
                                 type="number"
                                 placeholder="Enter new balance"
                                 value={balance}
-                                onChange={(e) => setBalance(e.target.value)}
+                                onChange={(e) => setBalance(+e.target.value)}
                             />
                         </Form.Group>
                     </Form>
@@ -230,6 +229,7 @@ const handleBalanceChange = () => {
                         placeholder="1000"
                         value={amount}
                         onChange={handleAmount}
+                        min={1}
                         />
                     </Form.Group>
                     <Form.Group>
@@ -258,7 +258,7 @@ const handleBalanceChange = () => {
 
             <nav className="col-span-3 bg-blue-600 rounded-lg shadow-xl p-3 m-3 flex justify-between items-center">
               <div className="p-3">
-                <h1 className="text-4xl" id="balance">Balance: £{balance}<span><button onClick={() => handleShowBalance()}><PenBtn /></button>
+                <h1 className="text-4xl flex gap-3" id="balance">Balance: £{balance}<span><button onClick={() => handleShowBalance()}><PenBtn className="fill-white"/></button>
                 </span></h1>
                 <h1 className="text-4xl" id="cashflow">Cashflow: £{cashflow}</h1>
               </div>

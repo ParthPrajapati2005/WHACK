@@ -2,11 +2,8 @@ import { ReactComponent as Settings} from './assets/settings.svg'
 import { ReactComponent as Notifications} from "./assets/notifications.svg"
 import { ReactComponent as BugReport} from "./assets/bug.svg"
 import { PieChart } from '@mui/x-charts/PieChart';
-import { LinearProgress } from '@mui/material';
 import LinearProgressBar from './components/LinearProgressBar';
-import { Link } from 'react-router-dom'
 import { BarChart } from '@mui/x-charts';
-
 import { Typography, Modal, Box, TextField, Button, IconButton } from '@mui/material';
 import { useState } from 'react';
 import { useDrawingArea } from '@mui/x-charts/hooks';
@@ -17,11 +14,12 @@ import StarIcon from '@mui/icons-material/Star'; // Example icon
 import FavoriteIcon from '@mui/icons-material/Favorite'; // Example icon
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'; // Example icon
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'; // Right arrow icon
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 function Dashboard(){
 
     const progress = 50;
-
+    const navigate = useNavigate(); // Initialize useNavigate
     const StyledText = styled('text')(({ theme }) => ({
         fill: 'white',
         textAnchor: 'middle',
@@ -137,7 +135,7 @@ function Dashboard(){
                     color="black" // Changed to gray
                     endIcon={<ArrowForwardIcon />}
                     sx={{
-                        marginTop:'10%',
+                        marginTop:'15%',
                         marginLeft:'10%',
                         width:'80%',
                         height: '100px', // Increase height
@@ -149,7 +147,7 @@ function Dashboard(){
                         },
                     }}
                 >
-                    Action Button
+                    Time Machine Modelling
                 </Button>
 
                 <Button
@@ -157,7 +155,7 @@ function Dashboard(){
                     color="gray" // Changed to gray
                     endIcon={<ArrowForwardIcon />}
                     sx={{
-                        marginTop:'10%',
+                        marginTop:'15%',
                         marginLeft:'10%',
                         width:'80%',
                         height: '100px', // Increase height
@@ -169,15 +167,16 @@ function Dashboard(){
                         },
                     }}
                 >
-                    Action Button
+                    Predicted Spending
                 </Button>
 
                 <Button
                     variant="contained"
                     color="gray" // Changed to gray
                     endIcon={<ArrowForwardIcon />}
+                    onClick={() => navigate('/bankaccounts')}
                     sx={{
-                        marginTop:'10%',
+                        marginTop:'15%',
                         marginLeft:'10%',
                         width:'80%',
                         height: '100px', // Increase height
@@ -189,7 +188,7 @@ function Dashboard(){
                         },
                     }}
                 >
-                    Action Button
+                    Student Bank Accounts/LISA's
                 </Button>
             </section>
         
