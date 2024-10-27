@@ -3,7 +3,7 @@ import axios from 'axios';
 import defaultData from "./menuDataset.js"
 function MachineLearning(){
     const [income,setIncome] = useState(0);
-    const [actualData,setData] = useState(defaultData);
+    const [actualData,setData] = useState({});
     const [called,setCalled] = useState(false)
 
 
@@ -15,6 +15,7 @@ function MachineLearning(){
           const data = await axios.post("http://127.0.0.1:5000/suggested",{"income":totalIncome});
           
           console.log(data)
+          setData(data.data)
         }
         
         getData()
@@ -33,11 +34,16 @@ function MachineLearning(){
         <h1>Your Income: <span>{totalIncome}</span></h1>
         
         <div className="column-wrappers">
-            <div className="user-expenses">
-                <div className="col-title">Your expenses</div>
-                </div>
             <div className="rec-expenses">
-                <div className="col-title">What a UK student with your income would spend</div></div>
+            <div className="col-title">What an average UK student with your income would spend</div>
+            
+            {Object.entries(actualData).map(([key, value]) => (
+                          <div key={key} className="expense-item flex justify-between bg-blue-500 rounded-lg p-3 text-xl">
+                              {key}: £{value}
+                          </div>
+                      ))}
+            
+            </div>
         </div>
         
         </>
