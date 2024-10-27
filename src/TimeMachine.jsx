@@ -59,7 +59,7 @@ function TimeMachine() {
     };
 
     return (
-        <MDBContainer fluid style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <MDBContainer fluid style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             <div className="gradient-bg" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 
                 <MDBCard className='mx-5 p-4 shadow-5' style={{ background: 'hsla(0, 0%, 100%, 0.8)', backdropFilter: 'blur(30px)', minWidth: '600px', maxWidth: '800px' }}>
@@ -83,7 +83,7 @@ function TimeMachine() {
 
                             <MDBInput
                                 wrapperClass='mb-4'
-                                placeholder='How many years is your degree?'
+                                placeholder='When is the end year of your degree?'
                                 id='end'
                                 type='number'
                                 value={formData.end}
@@ -202,7 +202,7 @@ function TimeMachine() {
                                 <option value="Wiltshire">Wiltshire</option>
                             </select>
   
-                            <Button className='w-100 mb-4' size='md' type="submit">Submit</Button>
+                            <Button className='w-100' size='md' type="submit">Submit</Button>
                         </form>
                     </MDBCardBody>
                 </MDBCard>
