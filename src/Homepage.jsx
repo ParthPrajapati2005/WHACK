@@ -4,6 +4,8 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as BudgetIcon } from './assets/budget.svg'
 import { ReactComponent as TimeMachine} from './assets/timeMachine.svg'
+import { ReactComponent as Pen} from './assets/pen.svg'
+
 
 function Homepage() {
 
@@ -52,8 +54,11 @@ function Homepage() {
                     <p>Show potential investment growth</p>
                 </div>
                 <div className="bg-white flex flex-col rounded-lg shadow-xl p-3 mb-4 mx-4 items-center">
-                    <h1>Thing 3</h1>
-                    <p>para3</p>
+                    <Pen className="w-16 h-16 md:w-24 md:h-24 lg:w-24 lg:h-24" />
+                    <h1>Bank Comparison</h1>
+                    <p>Educate yourself on the best places to store tour saving</p>
+                    <p>See the benefits of using student bank accounts and ISAs</p>
+                    <p>Compair the rewards with each other</p>
                 </div>
             </section>
         </div>
