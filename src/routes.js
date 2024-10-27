@@ -6,7 +6,7 @@ import Menu from "./Menu.jsx"
 import { Navigate } from 'react-router-dom';
 import { useAuth } from './authContext.js';
 import Dashboard from "./Dashboard.jsx";
-
+import MachineLearning from "./MachineLearning.jsx";
 const ProtectedRoute = ({ children }) => {
     const { isAuthenticated } = useAuth();
 
@@ -38,6 +38,10 @@ const routes = [
     {
         path:"/dashboard",
         element: <Dashboard />
+    },
+    {
+        path:"/ml",
+        element: <MachineLearning />
     }
 ]
 
