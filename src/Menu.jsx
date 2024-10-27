@@ -6,10 +6,12 @@ import { ReactComponent as AddBtn } from "./assets/addBtn.svg"
 import { ReactComponent as PenBtn } from "./assets/pen.svg"
 import { Modal, Form, Button }  from 'react-bootstrap';
 import { ReactComponent as BinBtn } from "./assets/bin.svg"
+import { PiArrowSquareInThin } from "react-icons/pi";
 
 function Menu(){
 
   const [actualData, setData] = useState(data);
+  
   const [newThing, setNew] = useState(null);
   const [show, setShow] = useState(false);
   const [name, setName] = useState('');
@@ -30,7 +32,10 @@ function Menu(){
     }
     setShow(true);
   }
-
+  const handleBalanceOpen = ()=>{
+    setNewBalance(actualData.balance)
+    setShowBalanceModal(true)
+  }
   const handleRemove = (key, type) => {
 
     const keyToRemove = key;
@@ -62,7 +67,11 @@ function Menu(){
 
   const handleName = (e) => setName(e.target.value);
   const handleAmount = (e) => setAmount(e.target.value);
-  const handleType = (e) => setType(e.target.value);
+  const handleType = (e) => {
+    let tempType = e.target.value;
+    
+    setType(e.target.value)
+};
 
   const handleBalanceChange = () => {
         // Update the balance when the user submits the form
@@ -70,8 +79,9 @@ function Menu(){
             ...actualData,
             balance: newBalance // Update the balance in actualData
         });
-        setNewBalance(0); // Reset balance input
+        //setNewBalance(0); // Reset balance input
         setShowBalanceModal(false); // Close modal
+        
     };
 
   const handleNew = () => {
@@ -144,7 +154,7 @@ function Menu(){
       setLoaded(true)
     }, [])
 
-    const balance =  actualData.balance;
+    //const balance =  actualData.balance;
     
     let totalIncome = 0;
     let totalExpenses = 0;
@@ -233,7 +243,12 @@ function Menu(){
           </Modal>
 
           <div className="grid-container">
-            <div className="top-row"><div className="text-4xl " id="balance">Balance: £{balance}</div><div className="text-4xl" id="cashflow">Cashflow: £{cashflow}</div></div>
+            <div className="top-row"><div className="text-4xl " id="balance">Balance: £{actualData.balance}
+
+            <button onClick={() => handleBalanceOpen()}><PenBtn /></button>
+            </div>
+            
+            <div className="text-4xl" id="cashflow">Cashflow: £{cashflow}</div></div>
             <div className="bottom-row-item">Monthly Income 
                 <div className="item-container">
                     {Object.entries(actualData.income).map(([key, value]) => (
