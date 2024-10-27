@@ -1,14 +1,22 @@
-import { ReactComponent as Settings } from './assets/settings.svg';
-import { ReactComponent as Notifications } from "./assets/notifications.svg";
-import { ReactComponent as BugReport } from "./assets/bug.svg";
+import { ReactComponent as Settings} from './assets/settings.svg'
+import { ReactComponent as Notifications} from "./assets/notifications.svg"
+import { ReactComponent as BugReport} from "./assets/bug.svg"
 import { PieChart } from '@mui/x-charts/PieChart';
-import { LinearProgress, Typography } from '@mui/material';
-import { useDrawingArea } from '@mui/x-charts/hooks';
-import { styled } from '@mui/material/styles';
+import { LinearProgress } from '@mui/material';
 import LinearProgressBar from './components/LinearProgressBar';
 import { Link } from 'react-router-dom'
 import { BarChart } from '@mui/x-charts';
-import { useState, useEffect } from "react";
+
+import { Typography, Modal, Box, TextField, Button, IconButton } from '@mui/material';
+import { useState } from 'react';
+import { useDrawingArea } from '@mui/x-charts/hooks';
+import { styled } from '@mui/material/styles';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import StarIcon from '@mui/icons-material/Star'; // Example icon
+import FavoriteIcon from '@mui/icons-material/Favorite'; // Example icon
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'; // Example icon
+
 function Dashboard(){
 
     const progress = 50;
@@ -18,17 +26,17 @@ function Dashboard(){
         textAnchor: 'middle',
         dominantBaseline: 'central',
         fontSize: 20,
-    }));
+      }));
 
     function PieCenterLabel({ children }) {
         const { width, height, left, top } = useDrawingArea();
         return (
-            <StyledText x={left + width / 2} y={top + height / 2}>
-                {children}
-            </StyledText>
+          <StyledText x={left + width / 2} y={top + height / 2}>
+            {children}
+          </StyledText>
         );
-    }
-
+      }
+    
     const [open, setOpen] = useState(false);
     const [newGoal, setNewGoal] = useState("");
     const [monetaryValue, setMonetaryValue] = useState("");
@@ -79,7 +87,8 @@ function Dashboard(){
         const updatedGoals = goals.filter((_, i) => i !== index);
         setGoals(updatedGoals);
     };
-    return (
+
+    return(
         <div className="grid grid-cols-3 gap-3 p-3 bg-blue-950 h-screen w-screen text-white">
             <nav className="flex justify-between col-span-3 bg-gray-600 rounded-xl px-3 shadow-xl">
                 <div className="flex flex-col justify-center">
@@ -126,13 +135,7 @@ function Dashboard(){
                     <Link to='/'>For now there's nothing</Link>
                 </div>
             </section>
-            <section className='bg-gray-600 rounded-lg shadow-xl p-3'>
-                <p>Goals</p>
-                <ul>
-                    <li>Goal 1</li>
-                    <li>Goal 2</li>
-                </ul>
-            </section>
+        
             <section className='bg-gray-600 rounded-lg shadow-xl p-3'>
                 <p className='flex justify-center'>My Expenses for June</p>
                 <BarChart xAxis={[{ scaleType: 'band', data: ['group A','group B', 'group C']}]}
@@ -141,32 +144,32 @@ function Dashboard(){
                 height={200}
                 />
             </section>
-            <section className='bg-gray-600 rounded-lg shadow-xl p-3'>
 
-            </section>
-            <footer className='col-span-3 bg-gray-600 rounded-lg shadow-xl p-3'>
-
-            </footer>
-            {/* <section className="bg-gray-800 row-span-3 rounded-lg">
-                1
-            </section>
-            <section className="bg-gray-800 rounded-lg row-span-2">
-                2
-            </section>
-            <section className="bg-gray-800 rounded-lg row-span-2">
-                3
-            </section>
-            <section className="bg-gray-800 rounded-lg row-span-2">
-                4
-            </section>
-            <section className="bg-gray-800 rounded-lg row-span-4"> 
-                5
-            </section>
-            <section className="bg-gray-800 rounded-lg row-span-3">
-                6
-            </section>
-            <section className="bg-gray-800 rounded-lg row-span-2">
-                7
+            <section className="bg-gray-700 rounded-lg shadow-xl p-4 flex flex-col justify-center">
+                <h2 className="text-lg font-bold mb-2">Your Goals</h2>
+                <div className="grid grid-cols-3 grid-rows-2 gap-3 w-full h-full">
+                    {goals.map((goal, index) => (
+                        <div key={index} className="flex flex-col items-center justify-center bg-gray-600 rounded-lg p-4 text-center shadow-md">
+                            <div>{goal.icon} {/* Display selected icon */}</div>
+                            <div>{goal.name}</div>
+                            <div>${goal.value}</div>
+                            <div className="flex gap-2 mt-2">
+                                <IconButton onClick={() => handleEditGoal(index)} size="small">
+                                    <EditIcon fontSize="small" style={{ color: 'white' }} />
+                                </IconButton>
+                                <IconButton onClick={() => handleDeleteGoal(index)} size="small">
+                                    <DeleteIcon fontSize="small" style={{ color: 'white' }} />
+                                </IconButton>
+                            </div>
+                        </div>
+                    ))}
+                    <div
+                        className="flex items-center justify-center bg-gray-600 bg-opacity-50 border-2 border-dashed border-gray-400 rounded-lg p-4 text-center cursor-pointer"
+                        onClick={handleOpen}
+                    >
+                        + Add Goal
+                    </div>
+                </div>
             </section>
 
             {/* Modal for Adding/Editing a Goal */}
@@ -219,8 +222,41 @@ function Dashboard(){
                     </Button>
                 </Box>
             </Modal>
+
+
+            <footer className='col-span-3 bg-gray-600 rounded-lg shadow-xl p-3'>
+
+            </footer>
+
+
+
+
+            {/* <section className="bg-gray-800 row-span-3 rounded-lg">
+                1
+            </section>
+            <section className="bg-gray-800 rounded-lg row-span-2">
+                2
+            </section>
+            <section className="bg-gray-800 rounded-lg row-span-2">
+                3
+            </section>
+            <section className="bg-gray-800 rounded-lg row-span-2">
+                4
+            </section>
+            <section className="bg-gray-800 rounded-lg row-span-4"> 
+                5
+            </section>
+            <section className="bg-gray-800 rounded-lg row-span-3">
+                6
+            </section>
+            <section className="bg-gray-800 rounded-lg row-span-2">
+                7
+            </section>
+            <footer className="bg-gray-800 rounded-lg col-span-3">
+
+            </footer> */}
         </div>
-    );
+    )
 }
 
-export default Dashboard;
+export default Dashboard
