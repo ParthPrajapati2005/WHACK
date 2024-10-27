@@ -2,17 +2,17 @@ import { ReactComponent as Settings } from './assets/settings.svg';
 import { ReactComponent as Notifications } from "./assets/notifications.svg";
 import { ReactComponent as BugReport } from "./assets/bug.svg";
 import { PieChart } from '@mui/x-charts/PieChart';
-import { Typography, Modal, Box, TextField, Button, IconButton } from '@mui/material';
-import { useState } from 'react';
+import { LinearProgress, Typography } from '@mui/material';
 import { useDrawingArea } from '@mui/x-charts/hooks';
 import { styled } from '@mui/material/styles';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import StarIcon from '@mui/icons-material/Star'; // Example icon
-import FavoriteIcon from '@mui/icons-material/Favorite'; // Example icon
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'; // Example icon
+import LinearProgressBar from './components/LinearProgressBar';
+import { Link } from 'react-router-dom'
+import { BarChart } from '@mui/x-charts';
 
-function Dashboard() {
+function Dashboard(){
+
+    const progress = 50;
+
     const StyledText = styled('text')(({ theme }) => ({
         fill: 'white',
         textAnchor: 'middle',
@@ -81,11 +81,10 @@ function Dashboard() {
     };
     return (
         <div className="grid grid-cols-3 gap-3 p-3 bg-blue-950 h-screen w-screen text-white">
-            <nav className="flex justify-between col-span-3 bg-gray-700 rounded-xl p-3 shadow-xl">
+            <nav className="flex justify-between col-span-3 bg-gray-600 rounded-xl px-3 shadow-xl">
                 <div className="flex flex-col justify-center">
                     <p className='font-extrabold text-2xl'>Future Self</p>
-                    <h1>Welcome back, username!</h1>
-                    <p className='text-gray-500'>Ready to build your future</p>
+                    <h2>Welcome back, username!</h2>
                 </div>
                 <div className='flex items-center justify-between gap-5'>
                     <button><BugReport /></button>
@@ -93,13 +92,11 @@ function Dashboard() {
                     <button><Notifications /></button>
                 </div>
             </nav>
-
-            <section className='bg-gray-700 rounded-lg shadow-xl flex flex-col justify-center items-center'>
-                
+            <section className='bg-gray-600 rounded-lg shadow-xl flex flex-col justify-center items-center'>
                 <PieChart series={[
                     {
                         data:[
-                            {id:0, value:10, label:'series A', fill:'white'},
+                            {id:0, value:10},
                             {id:1, value:15, label:'series B'},
                             {id:2, value:25, label:'series C'},
                         ],
@@ -113,35 +110,63 @@ function Dashboard() {
                     <PieCenterLabel>$4000</PieCenterLabel>
                 </PieChart>
             </section>
-
-            {/* Other sections */}
-
-            {/* Goals Section */}
-            <section className="bg-gray-700 rounded-lg shadow-xl p-4 flex flex-col justify-center">
-                <h2 className="text-lg font-bold mb-2">Your Goals</h2>
-                <div className="grid grid-cols-3 grid-rows-2 gap-3 w-full h-full">
-                    {goals.map((goal, index) => (
-                        <div key={index} className="flex flex-col items-center justify-center bg-gray-600 rounded-lg p-4 text-center shadow-md">
-                            <div>{goal.icon} {/* Display selected icon */}</div>
-                            <div>{goal.name}</div>
-                            <div>£{goal.value}</div>
-                            <div className="flex gap-2 mt-2">
-                                <IconButton onClick={() => handleEditGoal(index)} size="small">
-                                    <EditIcon fontSize="small" style={{ color: 'white' }} />
-                                </IconButton>
-                                <IconButton onClick={() => handleDeleteGoal(index)} size="small">
-                                    <DeleteIcon fontSize="small" style={{ color: 'white' }} />
-                                </IconButton>
-                            </div>
-                        </div>
-                    ))}
-                    <div
-                        className="flex items-center justify-center bg-gray-600 bg-opacity-50 border-2 border-dashed border-gray-400 rounded-lg p-4 text-center cursor-pointer"
-                        onClick={handleOpen}
-                    >
-                        + Add Goal
-                    </div>
+            <section className='grid grid-cols-3 bg-gray-600 rounded-lg shadow-xl items-center'>
+                <p className='col-span-3 flex justify-center pt-3 text-2xl font-bold'>My Cashflow for June</p>
+                <div className='col-span-2 p-3'>
+                    <p>This linear progress has {progress} value</p>
+                    <LinearProgressBar />
+                    <br></br>
+                    <LinearProgressBar />
                 </div>
+                <h1 className='col-span-1'>$24,578</h1>
+            </section>
+            <section className='bg-gray-600 rounded-lg shadow-xl row-span-1'>
+                <div className='p-3 flex flex-col justify-center text-2xl font-bold'>
+                    <p>Get more useful information here</p>
+                    <Link to='/'>For now there's nothing</Link>
+                </div>
+            </section>
+            <section className='bg-gray-600 rounded-lg shadow-xl p-3'>
+                <p>Goals</p>
+                <ul>
+                    <li>Goal 1</li>
+                    <li>Goal 2</li>
+                </ul>
+            </section>
+            <section className='bg-gray-600 rounded-lg shadow-xl p-3'>
+                <p className='flex justify-center'>My Expenses for June</p>
+                <BarChart xAxis={[{ scaleType: 'band', data: ['group A','group B', 'group C']}]}
+                series={[{ data: [4,3,5]}, {data: [1,6,3]}, {data: [2,5,6]}]}
+                width={500}
+                height={200}
+                />
+            </section>
+            <section className='bg-gray-600 rounded-lg shadow-xl p-3'>
+
+            </section>
+            <footer className='col-span-3 bg-gray-600 rounded-lg shadow-xl p-3'>
+
+            </footer>
+            {/* <section className="bg-gray-800 row-span-3 rounded-lg">
+                1
+            </section>
+            <section className="bg-gray-800 rounded-lg row-span-2">
+                2
+            </section>
+            <section className="bg-gray-800 rounded-lg row-span-2">
+                3
+            </section>
+            <section className="bg-gray-800 rounded-lg row-span-2">
+                4
+            </section>
+            <section className="bg-gray-800 rounded-lg row-span-4"> 
+                5
+            </section>
+            <section className="bg-gray-800 rounded-lg row-span-3">
+                6
+            </section>
+            <section className="bg-gray-800 rounded-lg row-span-2">
+                7
             </section>
 
             {/* Modal for Adding/Editing a Goal */}

@@ -6,8 +6,6 @@ import { ReactComponent as AddBtn } from "./assets/addBtn.svg"
 import { ReactComponent as PenBtn } from "./assets/pen.svg"
 import { Modal, Form, Button }  from 'react-bootstrap';
 import { ReactComponent as BinBtn } from "./assets/bin.svg"
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
 
 function Menu(){
 
@@ -32,7 +30,7 @@ function Menu(){
   const handleRemove = (key, type) => {
 
     const keyToRemove = key;
-
+    
     switch(type){
       case '1':
         const { [keyToRemove]: unused1, ...updatedIncome1 } = actualData.income;
@@ -49,11 +47,14 @@ function Menu(){
           })
       break;
       case '3':
-        const { [keyToRemove]: unused3, ...updatedIncome3 } = actualData.expenses;
+        const { [keyToRemove]: unused3, ...updatedIncome3 } = actualData.debt;
         setData({
           ...actualData,
-          expenses: updatedIncome3
+          debt: updatedIncome3
           })
+      break;
+      default:
+        console.log('error');
     }
   }
   
@@ -91,7 +92,6 @@ function Menu(){
 
     switch(type){
       case "1":
-
 
         setData({
           ...actualData,
@@ -158,13 +158,13 @@ function Menu(){
 
 
     return(
-        <>
+        <div className="">
           <div className="gradient-bg">
-          <Modal className="flex flex-col" show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Insert the data</Modal.Title>
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton />
+              <Modal.Title className="flex justify-center items-center pt-3">Insert the data</Modal.Title>
               <Modal.Body>
-                <Form>
+                <Form className="flex flex-col gap-3">
                   <Form.Group>
                     <Form.Label>Name</Form.Label>
                     <Form.Control
@@ -173,6 +173,8 @@ function Menu(){
                       value={name}
                       onChange={handleName} 
                       />
+                  </Form.Group>
+                  <Form.Group>
                     <Form.Label>Amount</Form.Label>
                     <Form.Control
                       type="text"
@@ -180,6 +182,9 @@ function Menu(){
                       value={amount}
                       onChange={handleAmount}
                        />
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label>Select the type</Form.Label>
                     <Form.Select onChange={handleType} value={type}>
                       <option>Choose the type</option>
                       <option value="1">Income</option>
@@ -193,23 +198,25 @@ function Menu(){
                 <Button variant="secondary" onClick={handleClose}>
                   Close
                 </Button>
-                <Button variant="primary" onClick={handleNew}>
+                <Button variant="primary" onClick={() => {
+                  handleNew()
+                  handleClose()
+                }}>
                   Save Changes
                 </Button>
               </Modal.Footer>
-            </Modal.Header>
 
           </Modal>
 
           
-          <Carousel responsive={responsive}>
-          <div className="grid-container">
-          
-          <div className="top-row"><div className="text-4xl " id="balance">Balance: £{balance}</div><div className="text-4xl" id="cashflow">Cashflow: £{cashflow}</div></div>
+          <div className="top-row text-white">
+            <div className="text-4xl" id="balance">Balance: £{balance}</div>
+            <div className="text-4xl" id="cashflow">Cashflow: £{cashflow}</div>
+          </div>
             
             
 
-            <div className="bottom-row-item">Monthly Income 
+            <div className="bottom-row-item text-white">Monthly Income 
                 <div className="item-container">
                     {Object.entries(actualData.income).map(([key, value]) => (
                         <div key={key} className="income-item flex justify-between">
@@ -223,28 +230,28 @@ function Menu(){
                 </div>
             </div>
 
-            <div className="bottom-row-item">Monthly Expenses
+            <div className="bottom-row-item text-white">Monthly Expenses
             <div className="item-container">
                     {Object.entries(actualData.expenses).map(([key, value]) => (
                         <div key={key} className="expense-item">
                             {key}: £{value}
                             <div>
                               <button onClick={() => handleOpen('pen', key, value, '2')}><PenBtn /></button>
-                              <button><BinBtn /></button>
+                              <button onClick={() => handleRemove(key, '2')}><BinBtn /></button>
                             </div>
                         </div>
                     ))}
                 </div>
             </div>
             
-            <div className="bottom-row-item">Debts
+            <div className="bottom-row-item text-white">Debts
             <div className="item-container">
                     {Object.entries(actualData.debt).map(([key, value]) => (
                         <div key={key} className="expense-item">
                             {key}: £{value}
                             <div>
                               <button onClick={() => handleOpen('pen', key, value, '3')}><PenBtn /></button>
-                              <button><BinBtn /></button>
+                              <button onClick={() => handleRemove(key, '3')}><BinBtn /></button>
                             </div>
                         </div>
                     ))}
@@ -253,10 +260,9 @@ function Menu(){
 
                   
          </div>
-         </Carousel> 
           <button className="absolute bottom-14 right-14 scale-150 hover:fill-[#2196f3]" onClick={handleOpen}><AddBtn /></button>
-          </div>
-        </>
+        </div>
+        // </div>
     )
 
 
