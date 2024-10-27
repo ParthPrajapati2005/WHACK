@@ -16,6 +16,8 @@ function Menu(){
   const [name, setName] = useState('');
   const [amount, setAmount] = useState(0);
   const [type, setType] = useState('');
+  const [showBalanceModal, setShowBalanceModal] = useState(false);
+  const [newBalance, setNewBalance] = useState(0);
 
   
 
@@ -61,6 +63,16 @@ function Menu(){
   const handleName = (e) => setName(e.target.value);
   const handleAmount = (e) => setAmount(e.target.value);
   const handleType = (e) => setType(e.target.value);
+
+  const handleBalanceChange = () => {
+        // Update the balance when the user submits the form
+        setData({
+            ...actualData,
+            balance: newBalance // Update the balance in actualData
+        });
+        setNewBalance(0); // Reset balance input
+        setShowBalanceModal(false); // Close modal
+    };
 
   const handleNew = () => {
     setNew({nameData: name, amountData: amount});
@@ -127,6 +139,34 @@ function Menu(){
 
     return(
         <>
+             <Modal show={showBalanceModal} onHide={() => setShowBalanceModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Update Balance</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group>
+                            <Form.Label>New Balance</Form.Label>
+                            <Form.Control
+                                type="number"
+                                placeholder="Enter new balance"
+                                value={newBalance}
+                                onChange={(e) => setNewBalance(e.target.value)}
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowBalanceModal(false)}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleBalanceChange}>
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
           <Modal className="flex flex-col" show={show} onHide={handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>Insert the data</Modal.Title>

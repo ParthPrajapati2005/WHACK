@@ -114,9 +114,9 @@ def getData():
         return jsonify({"message":"User not found"},status=404),404
     return jsonify(theUser,status=200),200
 
-@app.route('/banks', methods=['POST'])
-def getData():
-    return jsonify({"bank":getBank(), "LISA":getLISA()})
+# @app.route('/banks', methods=['POST'])
+# def getData():
+#     return jsonify({"bank":getBank(), "LISA":getLISA()})
 
 if __name__ == "__main__":
     app.run(debug=True)
