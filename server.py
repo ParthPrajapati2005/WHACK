@@ -6,6 +6,7 @@ from functions import calculateTotalDebtAtEndOfGraduation
 from functions import suggestSpendingMl
 from BankAccounts import getBank
 from LISA import getLISA
+from salary import getSalary
 
 uri = "mongodb+srv://whack:whack2024@cluster0.dyjyy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 client = MongoClient(uri, server_api=ServerApi('1'))
@@ -114,7 +115,7 @@ def setUserObject():
 
 @app.route('/expenses', methods=['POST'])
 def getExpenses():
-    data=request.get_json()
+    data = request.get_json()
     groceries = data.get('groceries')
     rent = data.get('rent')
     travel = data.get('travel')
@@ -136,7 +137,7 @@ def getExpenses():
 
 @app.route('/homepage', methods=['POST'])
 def getData():
-    data=request.get_json()
+    data = request.get_json()
     username = data.get('username')
     theUser = mycol.find_one({"username": username})
     if theUser == None:
@@ -154,6 +155,15 @@ def getSuggested():
     for i in theUser["income"].values():
         income+=i
     return jsonify({"spending":suggestSpendingMl(income)})
+
+@app.route('/future', methods=['POST'])
+def futurePlanner():
+    data = request.get_json()
+    startYear = data.get('start')
+    time = data.get('time')
+    degree = data.get('degree')
+    county = data.get('state')
+    return jsonify({"debt":calculateTotalDebtAtEndOfGraduation(startYear,startYear+time),"salary":getSalary(degree,county)})
 
 if __name__ == "__main__":
     app.run(debug=True)
