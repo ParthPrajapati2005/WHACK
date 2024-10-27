@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// import './CSS/Menu.css';
 import axios from 'axios';
 import data from './menuDataset'
 import { ReactComponent as AddBtn } from "./assets/addBtn.svg"
@@ -158,111 +157,7 @@ function Menu(){
 
 
     return(
-        // <div className="">
-        //   <div className="bg-blue-900">
-        //     <Modal show={show} onHide={handleClose}>
-        //       <Modal.Header closeButton />
-        //         <Modal.Title className="flex justify-center items-center pt-3">Insert the data</Modal.Title>
-        //         <Modal.Body>
-        //           <Form className="flex flex-col gap-3">
-        //             <Form.Group>
-        //               <Form.Label>Name</Form.Label>
-        //               <Form.Control
-        //                 type="text"
-        //                 placeholder="Car mortgage"
-        //                 value={name}
-        //                 onChange={handleName} 
-        //                 />
-        //             </Form.Group>
-        //             <Form.Group>
-        //               <Form.Label>Amount</Form.Label>
-        //               <Form.Control
-        //                 type="text"
-        //                 placeholder="1000"
-        //                 value={amount}
-        //                 onChange={handleAmount}
-        //                 />
-        //             </Form.Group>
-        //             <Form.Group>
-        //               <Form.Label>Select the type</Form.Label>
-        //               <Form.Select onChange={handleType} value={type}>
-        //                 <option>Choose the type</option>
-        //                 <option value="1">Income</option>
-        //                 <option value="2">Expenses</option>
-        //                 <option value="3">Debt</option>
-        //               </Form.Select>
-        //             </Form.Group> 
-        //           </Form>
-        //         </Modal.Body>
-        //         <Modal.Footer>
-        //           <Button variant="secondary" onClick={handleClose}>
-        //             Close
-        //           </Button>
-        //           <Button variant="primary" onClick={() => {
-        //             handleNew()
-        //             handleClose()
-        //           }}>
-        //             Save Changes
-        //           </Button>
-        //         </Modal.Footer>
-
-        //     </Modal>
-
-            
-        //     <div className="top-row text-white">
-        //       <div className="text-4xl" id="balance">Balance: £{balance}</div>
-        //       <div className="text-4xl" id="cashflow">Cashflow: £{cashflow}</div>
-        //     </div>
-              
-              
-
-        //       <div className="bottom-row-item text-white">Monthly Income 
-        //           <div className="item-container">
-        //               {Object.entries(actualData.income).map(([key, value]) => (
-        //                   <div key={key} className="income-item flex justify-between">
-        //                       {key}: £{value}
-        //                       <div>
-        //                         <button onClick={() => handleOpen('pen', key, value, '1')}><PenBtn /></button>
-        //                         <button onClick={() => handleRemove(key, '1')}><BinBtn /></button>
-        //                       </div>
-        //                   </div>
-        //               ))}
-        //           </div>
-        //       </div>
-
-        //       <div className="bottom-row-item text-white">Monthly Expenses
-        //       <div className="item-container">
-        //               {Object.entries(actualData.expenses).map(([key, value]) => (
-        //                   <div key={key} className="expense-item">
-        //                       {key}: £{value}
-        //                       <div>
-        //                         <button onClick={() => handleOpen('pen', key, value, '2')}><PenBtn /></button>
-        //                         <button onClick={() => handleRemove(key, '2')}><BinBtn /></button>
-        //                       </div>
-        //                   </div>
-        //               ))}
-        //           </div>
-        //       </div>
-              
-        //       <div className="bottom-row-item text-white">Debts
-        //       <div className="item-container">
-        //               {Object.entries(actualData.debt).map(([key, value]) => (
-        //                   <div key={key} className="expense-item">
-        //                       {key}: £{value}
-        //                       <div>
-        //                         <button onClick={() => handleOpen('pen', key, value, '3')}><PenBtn /></button>
-        //                         <button onClick={() => handleRemove(key, '3')}><BinBtn /></button>
-        //                       </div>
-        //                   </div>
-        //               ))}
-        //           </div>
-        //       </div>
-
-        //  </div>
-        //   <button className="absolute bottom-14 right-14 scale-150 hover:fill-[#2196f3]" onClick={handleOpen}><AddBtn /></button>
-        // </div>
-        // </div>
-        <div className="bg-blue-900 grid grid-cols-3 grid-rows-[1fr_3fr] h-screen">
+        <div className="bg-blue-900 grid grid-cols-3 grid-rows-[1fr_3fr] h-screen text-white">
           <Modal show={show} onHide={handleClose}>
                <Modal.Header closeButton />
                  <Modal.Title className="flex justify-center items-center pt-3">Insert the data</Modal.Title>
@@ -310,47 +205,51 @@ function Menu(){
                 </Modal.Footer>
             </Modal>
 
-            <nav className="col-span-3 bg-gray-600 rounded-lg shadow-xl p-3 m-3 flex flex-col justify-center items-center">
-              <h1 className="text-4xl" id="balance">Balance: £{balance}</h1>
-              <h1 className="text-4xl" id="cashflow">Cashflow: £{cashflow}</h1>
+            <nav className="col-span-3 bg-blue-600 rounded-lg shadow-xl p-3 m-3 flex justify-between items-center">
+              <div className="p-3">
+                <h1 className="text-4xl" id="balance">Balance: £{balance}</h1>
+                <h1 className="text-4xl" id="cashflow">Cashflow: £{cashflow}</h1>
+              </div>
+              <button className="p-3 hover:bg-blue-700 rounded-lg  transition duration-200" onClick={handleOpen}>
+                <p className="text-2xl flex gap-5 items-center">Add a new entry<span><AddBtn /></span></p>
+              </button>
             </nav>
-            <div id="incomeCol" className="col-start-1 col-span-1 bg-gray-600 rounded-lg shadow-xl p-3 m-3">
+            <div id="incomeCol" className="col-start-1 col-span-1 bg-blue-600 rounded-lg shadow-xl p-3 m-3">
               <h1 className="text-2xl">Monthly Income</h1>
             {Object.entries(actualData.income).map(([key, value]) => (
-                          <div key={key} className="income-item flex justify-between">
+                          <div key={key} className="income-item flex justify-between bg-blue-500 rounded-lg p-3 text-xl">
                               {key}: £{value}
-                              <div>
-                                <button onClick={() => handleOpen('pen', key, value, '1')}><PenBtn /></button>
-                                <button onClick={() => handleRemove(key, '1')}><BinBtn /></button>
+                              <div className="flex gap-3">
+                                <button className="hover:scale-125 transition duration-200" onClick={() => handleOpen('pen', key, value, '1')}><PenBtn className="fill-white" /></button>
+                                <button className="hover:scale-125 transition duration-200" onClick={() => handleRemove(key, '1')}><BinBtn className="fill-white"/></button>
                               </div>
                           </div>
                       ))}
             </div>
-            <div id="ExpenseCol" className="col-start-2 col-span-1 bg-gray-600 rounded-lg p-3 m-3">
+            <div id="ExpenseCol" className="col-start-2 col-span-1 bg-blue-600 rounded-lg shadow-xl p-3 m-3">
               <h1 className="text-2xl">Monthly Expense</h1>
             {Object.entries(actualData.expenses).map(([key, value]) => (
-                          <div key={key} className="expense-item">
+                          <div key={key} className="expense-item flex justify-between bg-blue-500 rounded-lg p-3 text-xl">
                               {key}: £{value}
-                              <div>
-                                <button onClick={() => handleOpen('pen', key, value, '2')}><PenBtn /></button>
-                                <button onClick={() => handleRemove(key, '2')}><BinBtn /></button>
+                              <div className="flex gap-3">
+                                <button className="hover:scale-125 transition duration-200" onClick={() => handleOpen('pen', key, value, '2')}><PenBtn className="fill-white"/></button>
+                                <button className="hover:scale-125 transition duration-200" onClick={() => handleRemove(key, '2')}><BinBtn className="fill-white"/></button>
                               </div>
                           </div>
                       ))}
             </div>
-            <div id="DebtCol" className="col-start-3 col-span-1 bg-gray-600 rounded-lg shadow-xl p-3 m-3">
+            <div id="DebtCol" className="col-start-3 col-span-1 bg-blue-600 rounded-lg shadow-xl p-3 m-3">
               <h1 className="text-2xl">Monthly Debt</h1>
             {Object.entries(actualData.debt).map(([key, value]) => (
-                          <div key={key} className="expense-item">
+                          <div key={key} className="expense-item flex justify-between bg-blue-500 rounded-lg p-3 text-xl">
                               {key}: £{value}
-                              <div>
-                                <button onClick={() => handleOpen('pen', key, value, '3')}><PenBtn /></button>
-                                <button onClick={() => handleRemove(key, '3')}><BinBtn /></button>
+                              <div className="flex gap-3">
+                                <button className="hover:scale-125 transition duration-200" onClick={() => handleOpen('pen', key, value, '3')}><PenBtn className="fill-white" /></button>
+                                <button className="hover:scale-125 transition duration-200" onClick={() => handleRemove(key, '3')}><BinBtn className="fill-white" /></button>
                               </div>
                           </div>
                       ))}
             </div>
-            <button className="absolute bottom-14 right-14 scale-150 hover:fill-[#2196f3]" onClick={handleOpen}><AddBtn /></button>
         </div>
     )
 
