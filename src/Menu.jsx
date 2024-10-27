@@ -101,7 +101,6 @@ const handleBalanceChange = () => {
         axios.post("http://127.0.0.1:5000/setuserobject", { "userObj": actualData });
       }
       
-      
   }, [actualData]); // Triggers the request after actualData updates
 
   useEffect(() => {
@@ -117,7 +116,7 @@ const handleBalanceChange = () => {
           ...actualData,
           income: {
             ...actualData.income,
-            [key]: value
+            [key]: Number(value)
           }
         })
 
@@ -127,7 +126,7 @@ const handleBalanceChange = () => {
           ...actualData,
           expenses: {
             ...actualData.expenses,
-            [key]: value
+            [key]: Number(value)
           }
         })
 
@@ -137,7 +136,7 @@ const handleBalanceChange = () => {
           ...actualData,
           debt: {
             ...actualData.debt,
-            [key]: value
+            [key]: Number(value)
           }
         })
 
@@ -145,14 +144,14 @@ const handleBalanceChange = () => {
       default:
         console.log("not found");
     }
-    navigate("/ml") // remove this after testing
+    
     }, [newThing])
 
 
     useEffect(() => {
       async function getData(){
+        let storedName = localStorage.getItem("user")
         const data = await axios.post("http://127.0.0.1:5000/userobject");
-        
         setData(data.data.user)
       }
 
@@ -167,14 +166,16 @@ const handleBalanceChange = () => {
     let totalExpenses = 0;
     for(let key in actualData.income){
         //console.log(key, data.income[key])
-        totalIncome+=actualData.income[key];
+        totalIncome+=parseInt(actualData.income[key]);
     }
     for(let key in actualData.expenses){
         //console.log(key, data.expenses[key])
-        totalExpenses+=actualData.expenses[key];
+        totalExpenses+=parseInt(actualData.expenses[key]);
     }
     
-    let cashflow = totalIncome - totalExpenses;
+
+    localStorage.setItem("totalIncome",totalIncome)
+    let cashflow = Number(totalIncome) - Number(totalExpenses);
     //console.log(data);
 
 
@@ -195,7 +196,7 @@ const handleBalanceChange = () => {
                                 type="number"
                                 placeholder="Enter new balance"
                                 value={balance}
-                                onChange={(e) => setBalance(+e.target.value)}
+                                onChange={(e) => setBalance(e.target.value)}
                             />
                         </Form.Group>
                     </Form>
