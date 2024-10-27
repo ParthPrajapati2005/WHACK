@@ -71,3 +71,6 @@ def getLISA():
 
         if(name != None and link != ''):
             lisa_data.append([name, link, minimum_investment, interest_paid])
+    return lisa_data
+
+getLISA()
