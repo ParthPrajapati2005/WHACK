@@ -3,6 +3,7 @@ from flask_cors import CORS
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from functions import calculateTotalDebtAtEndOfGraduation
+from functions import suggestSpendingMl
 from BankAccounts import getBank
 from LISA import getLISA
 
@@ -145,6 +146,14 @@ def getData():
 @app.route('/banks', methods=['POST'])
 def getBankData():
     return jsonify({"bank":getBank(), "LISA":getLISA()})
+
+@app.route('/suggested',methods=['POST'])
+def getSuggested():
+    theUser = mycol.find_one({"username": user})
+    income = 0
+    for i in theUser["income"].values():
+        income+=i
+    return jsonify({"spending":suggestSpendingMl(income)})
 
 if __name__ == "__main__":
     app.run(debug=True)

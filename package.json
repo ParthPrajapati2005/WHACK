@@ -5,9 +5,9 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@headlessui/react": "^2.2.0",
     "@mui/material": "^6.1.5",
     "@mui/x-charts": "^7.22.0",
-    "@headlessui/react": "^2.2.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -17,6 +17,7 @@
     "clsx": "^2.1.1",
     "mdb-react-ui-kit": "^9.0.0",
     "mdb-ui-kit": "^8.0.0",
+    "mui": "^0.0.1",
     "next-themes": "^0.3.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.5",
