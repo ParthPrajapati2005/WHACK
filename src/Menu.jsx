@@ -6,15 +6,19 @@ import { ReactComponent as AddBtn } from "./assets/addBtn.svg"
 import { ReactComponent as PenBtn } from "./assets/pen.svg"
 import { Modal, Form, Button }  from 'react-bootstrap';
 import { ReactComponent as BinBtn } from "./assets/bin.svg"
+import { PiArrowSquareInThin } from "react-icons/pi";
 
 function Menu(){
 
   const [actualData, setData] = useState(data);
+  
   const [newThing, setNew] = useState(null);
   const [show, setShow] = useState(false);
   const [name, setName] = useState('');
   const [amount, setAmount] = useState(0);
   const [type, setType] = useState('');
+  const [balance,setBalance] = useState(0)
+  const [showBalanceModal,setShowBalanceModal] = useState(false);
   const [loaded,setLoaded] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -61,8 +65,22 @@ function Menu(){
 
   const handleName = (e) => setName(e.target.value);
   const handleAmount = (e) => setAmount(e.target.value);
-  const handleType = (e) => setType(e.target.value);
+  const handleBalance = (e)=> setBalance(e.target.value);
 
+  const handleShowBalance = () => setShowBalanceModal(true);
+  const handleType = (e) => {
+    let tempType = e.target.value;
+    
+    setType(e.target.value)
+};
+const handleBalanceChange = () => {
+    setData({
+      ...actualData,
+      balance: balance,
+    });
+    setBalance(balance);
+    setShowBalanceModal(false);
+  };
   const handleNew = () => {
     setNew({nameData: name, amountData: amount});
   }
@@ -137,10 +155,11 @@ function Menu(){
       }
 
       getData()
+      setBalance(actualData.balance)
       setLoaded(true)
     }, [])
 
-    const balance =  actualData.balance;
+    
     
     let totalIncome = 0;
     let totalExpenses = 0;
@@ -262,7 +281,36 @@ function Menu(){
         //   <button className="absolute bottom-14 right-14 scale-150 hover:fill-[#2196f3]" onClick={handleOpen}><AddBtn /></button>
         // </div>
         // </div>
+
+        
         <div className="bg-blue-900 grid grid-cols-3 grid-rows-[1fr_3fr] h-screen">
+                        {/* Balance Update Modal */}
+                        <Modal show={showBalanceModal} onHide={() => setShowBalanceModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Update Balance</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group>
+                            <Form.Label>New Balance</Form.Label>
+                            <Form.Control
+                                type="number"
+                                placeholder="Enter new balance"
+                                value={balance}
+                                onChange={(e) => setBalance(e.target.value)}
+                            />
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowBalanceModal(false)}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={handleBalanceChange}>
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
           <Modal show={show} onHide={handleClose}>
                <Modal.Header closeButton />
                  <Modal.Title className="flex justify-center items-center pt-3">Insert the data</Modal.Title>
@@ -312,6 +360,7 @@ function Menu(){
 
             <nav className="col-span-3 bg-gray-600 rounded-lg shadow-xl p-3 m-3 flex flex-col justify-center items-center">
               <h1 className="text-4xl" id="balance">Balance: £{balance}</h1>
+              <button onClick={() => handleShowBalance()}><PenBtn /></button>
               <h1 className="text-4xl" id="cashflow">Cashflow: £{cashflow}</h1>
             </nav>
             <div id="incomeCol" className="col-start-1 col-span-1 bg-gray-600 rounded-lg shadow-xl p-3 m-3">
