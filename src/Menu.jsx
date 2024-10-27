@@ -178,6 +178,7 @@ const handleBalanceChange = () => {
 
     localStorage.setItem("totalIncome",totalIncome)
     let cashflow = Number(totalIncome) - Number(totalExpenses);
+    localStorage.setItem('cashflow', cashflow);
     //console.log(data);
 
 

@@ -125,7 +125,7 @@ function Dashboard(){
                     <h2>Welcome back, {user} !</h2>
                 </div>
                 <div className='flex items-center justify-between gap-5'>
-                    <button><BugReport /></button>
+                    <button onClick={() => navigate('/menu')}><BugReport /></button>
                     <button><Settings /></button>
                     <button><Notifications /></button>
                 </div>
@@ -156,7 +156,7 @@ function Dashboard(){
                     <br></br>
                     <LinearProgressBar />
                 </div>
-                <h1 className='col-span-1'>$24,578</h1>
+                {localStorage.getItem('cashflow') && <h1 className='col-span-1'>{localStorage.getItem('cashflow')}£</h1>}
             </section>
             <section className='bg-blue-700 rounded-lg shadow-xl row-span-2'>
                 <Typography variant="h6" className="mb-2"></Typography>
@@ -185,6 +185,7 @@ function Dashboard(){
                     variant="contained"
                     color="gray" // Changed to gray
                     endIcon={<ArrowForwardIcon />}
+                    onClick={() => navigate('/ml')}
                     sx={{
                         marginTop:'15%',
                         marginLeft:'10%',
