@@ -106,13 +106,9 @@ def getDataNoName():
 
 @app.route('/banks', methods=['POST'])
 def getBankData():
-<<<<<<< HEAD
     lisa_data = getLISA() 
     lisa_data_json = [list(row) for row in lisa_data]
     return jsonify({"bank":getBank(), "LISA":lisa_data_json})
-=======
-    return jsonify({"bank":getBank(),"LISA":getLISA()})
->>>>>>> 148b2d619c8fa5de2ed2c02026d0197f0985eeea
 
 @app.route('/suggested',methods=['POST'])
 def getSuggested():
