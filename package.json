@@ -6,10 +6,6 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@headlessui/react": "^2.2.0",
-<<<<<<< HEAD
-    "@mui/icons-material": "^6.1.5",
-=======
->>>>>>> 9236da8037336512f215fb6308fb358b8b56ddc5
     "@mui/material": "^6.1.5",
     "@mui/x-charts": "^7.22.0",
     "@testing-library/jest-dom": "^5.17.0",
