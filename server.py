@@ -143,7 +143,7 @@ def getData():
     return jsonify(theUser,status=200),200
 
 @app.route('/banks', methods=['POST'])
-def getData():
+def getBankData():
     return jsonify({"bank":getBank(), "LISA":getLISA()})
 
 if __name__ == "__main__":

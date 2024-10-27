@@ -51,5 +51,3 @@ def suggestSpendingMl(totalMonthlyIncome):
     print(newRes if newRes else res)
     return newRes if newRes else res
 
-suggestSpendingMl(700)
-

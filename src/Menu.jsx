@@ -6,6 +6,8 @@ import { ReactComponent as AddBtn } from "./assets/addBtn.svg"
 import { ReactComponent as PenBtn } from "./assets/pen.svg"
 import { Modal, Form, Button }  from 'react-bootstrap';
 import { ReactComponent as BinBtn } from "./assets/bin.svg"
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 
 function Menu(){
 
@@ -63,6 +65,14 @@ function Menu(){
   const handleNew = () => {
     setNew({nameData: name, amountData: amount});
   }
+
+
+  const responsive = {
+    superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 3 },
+    desktop: { breakpoint: { max: 3000, min: 1024 }, items: 3 },
+    tablet: { breakpoint: { max: 1024, min: 464 }, items: 3 },
+    mobile: { breakpoint: { max: 464, min: 0 }, items: 3 }
+  };
 
   useEffect(() => {
        // Ensures post request is only triggered on a change
@@ -149,6 +159,7 @@ function Menu(){
 
     return(
         <>
+          <div className="gradient-bg">
           <Modal className="flex flex-col" show={show} onHide={handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>Insert the data</Modal.Title>
@@ -190,8 +201,14 @@ function Menu(){
 
           </Modal>
 
+          
+          <Carousel responsive={responsive}>
           <div className="grid-container">
-            <div className="top-row"><div className="text-4xl " id="balance">Balance: £{balance}</div><div className="text-4xl" id="cashflow">Cashflow: £{cashflow}</div></div>
+          
+          <div className="top-row"><div className="text-4xl " id="balance">Balance: £{balance}</div><div className="text-4xl" id="cashflow">Cashflow: £{cashflow}</div></div>
+            
+            
+
             <div className="bottom-row-item">Monthly Income 
                 <div className="item-container">
                     {Object.entries(actualData.income).map(([key, value]) => (
@@ -204,10 +221,8 @@ function Menu(){
                         </div>
                     ))}
                 </div>
-            
-
-
             </div>
+
             <div className="bottom-row-item">Monthly Expenses
             <div className="item-container">
                     {Object.entries(actualData.expenses).map(([key, value]) => (
@@ -220,8 +235,6 @@ function Menu(){
                         </div>
                     ))}
                 </div>
-
-
             </div>
             
             <div className="bottom-row-item">Debts
@@ -237,8 +250,12 @@ function Menu(){
                     ))}
                 </div>
             </div>
+
+                  
          </div>
+         </Carousel> 
           <button className="absolute bottom-14 right-14 scale-150 hover:fill-[#2196f3]" onClick={handleOpen}><AddBtn /></button>
+          </div>
         </>
     )
 
