@@ -7,6 +7,7 @@ import { Modal, Form, Button }  from 'react-bootstrap';
 import { ReactComponent as BinBtn } from "./assets/bin.svg"
 import { PiArrowSquareInThin } from "react-icons/pi";
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 
 function Menu(){
@@ -263,9 +264,11 @@ const handleBalanceChange = () => {
                 </span></h1>
                 <h1 className="text-4xl" id="cashflow">Cashflow: £{cashflow}</h1>
               </div>
-              <button className="p-3 hover:bg-blue-700 rounded-lg  transition duration-200" onClick={handleOpen}>
-                <p className="text-2xl flex gap-5 items-center">Add a new entry<span><AddBtn /></span></p>
-              </button>
+              <div className="flex gap-3">
+                <button className="p-3 hover:bg-red-700 rounded-lg transition duration-200 px-5 font-bold text-xl" onClick={() => navigate("/dashboard")}>Go back</button>
+                <button className="p-3 hover:bg-green-700 rounded-lg  transition duration-200 font-bold text-xl" onClick={handleOpen}>Add a new entry</button>
+              </div>
+              
             </nav>
             <div id="incomeCol" className="col-start-1 col-span-1 bg-blue-600 rounded-lg shadow-xl p-3 m-3">
               <h1 className="text-2xl">Monthly Income</h1>
