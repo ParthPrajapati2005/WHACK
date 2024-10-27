@@ -1,252 +1,47 @@
-# import pandas as pd
-# from sklearn.model_selection import train_test_split
-# from sklearn.linear_model import LinearRegression
-# from sklearn.metrics import mean_absolute_error
-# data = pd.read_csv('UK_Student_Expenses.csv')
-# X = data[['Monthly_Income']]
-# y = data[['Student_Accommodation', 'Utilities', 'Grocery_shopping', 'Takeaways/dining', 'Public_Transportation']]
-# models = {}
-# predictions = {}
-# for column in y.columns:
-#     # Split data for training
-#     X_train, X_test, y_train, y_test = train_test_split(X, y[column], test_size=0.2, random_state=42)
-
-#     # Train a linear regression model for each expense category
-#     model = LinearRegression()
-#     model.fit(X_train, y_train)
-    
-#     # Store the model and predictions
-#     models[column] = model
-#     predictions[column] = model.predict(X_test)
-    
-#     # Calculate performance (mean absolute error)
-#     mae = mean_absolute_error(y_test, predictions[column])
-#     print(f"{column} model MAE: {mae:.2f}")
-# # Define the new income value
-
-
-
-# new_income = 2000  # for example
-
-# # Convert it into the format expected by the model
-# new_income_df = pd.DataFrame([[new_income]], columns=['Monthly_Income'])
-
-# # Predict each expense category
-# suggestions = {}
-# for column, model in models.items():
-#     suggested_value = model.predict(new_income_df)[0]
-#     suggestions[column] = round(suggested_value, 2)
-
-# print("Suggested spending values based on monthly income:")
-# print(suggestions)
-
-"""
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error
+import joblib  #For saving models
+import os      #For managing file paths
 
-# Load the dataset
-data = pd.read_csv('UK_Student_Expenses.csv')
-
-# Set up features (X) and targets (y)
-X = data[['Monthly_Income']]
-y = data[['Student_Accommodation', 'Utilities', 'Grocery_shopping', 'Takeaways/dining', 'Public_Transportation']]
-
-# Initialize dictionaries to store models and predictions
-models = {}
-predictions = {}
-
-# Loop through each target expense column
-for column in y.columns:
-    # Split data for training and testing
-    X_train, X_test, y_train, y_test = train_test_split(X, y[column], test_size=0.2, random_state=42)
-    
-    # Train a linear regression model for each expense category
-    model = LinearRegression()
-    model.fit(X_train, y_train)
-    
-    # Store the model and predictions
-    models[column] = model
-    predictions[column] = model.predict(X)
-    
-    # Calculate performance (mean absolute error)
-    mae = mean_absolute_error(y_test, model.predict(X_test))
-    print(f"{column} model MAE: {mae:.2f}")
-
-# Define the new income value for prediction
-new_income = 2000  # for example
-
-# Convert it into the format expected by the model
-new_income_df = pd.DataFrame([[new_income]], columns=['Monthly_Income'])
-
-# Predict each expense category based on the new income value
-suggestions = {}
-for column, model in models.items():
-    suggested_value = model.predict(new_income_df)[0]
-    suggestions[column] = round(suggested_value, 2)
-
-print("\nSuggested spending values based on monthly income:")
-print(suggestions)
-
-# Plot Income vs each Expense Category
-fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(14, 10))
-fig.suptitle("Monthly Income vs Expense Categories", fontsize=16)
-
-# Flatten axes for easy indexing
-axes = axes.flatten()
-
-# Generate scatter plots with regression lines for each expense category
-for i, column in enumerate(y.columns):
-    # Plot actual data points
-    axes[i].scatter(X, y[column], color='blue', alpha=0.5, label="Actual")
-
-    # Plot the regression line based on predictions
-    axes[i].plot(X, predictions[column], color='red', label="Predicted")
-
-    # Set labels and title
-    axes[i].set_xlabel("Monthly Income")
-    axes[i].set_ylabel(column)
-    axes[i].set_title(f"Income vs {column}")
-    axes[i].legend()
-
-# Hide any unused subplots
-for j in range(len(y.columns), len(axes)):
-    fig.delaxes(axes[j])
-
-plt.tight_layout(rect=[0, 0.03, 1, 0.95])  # Adjust layout to fit titles
-plt.show()
-"""
-# import pandas as pd
-# import matplotlib.pyplot as plt
-# from sklearn.model_selection import train_test_split
-# from sklearn.ensemble import RandomForestRegressor
-# from sklearn.metrics import mean_absolute_error
-
-# # Load the dataset
-# data = pd.read_csv('UK_Student_Expenses.csv')
-
-# # Set up features (X) and targets (y)
-# X = data[['Monthly_Income']]
-# y = data[['Student_Accommodation', 'Utilities', 'Grocery_shopping', 'Takeaways/dining', 'Public_Transportation']]
-
-# # Initialize dictionaries to store models and predictions
-# models = {}
-# predictions = {}
-
-# # Loop through each target expense column
-# for column in y.columns:
-#     # Split data for training and testing
-#     X_train, X_test, y_train, y_test = train_test_split(X, y[column], test_size=0.2, random_state=42)
-    
-#     # Train a Random Forest model for each expense category
-#     model = RandomForestRegressor(n_estimators=100, max_depth=5, random_state=42)
-#     model.fit(X_train, y_train)
-    
-#     # Store the model and make predictions on the entire X for visualization
-#     models[column] = model
-#     predictions[column] = model.predict(X)
-    
-#     # Calculate performance (mean absolute error)
-#     mae = mean_absolute_error(y_test, model.predict(X_test))
-#     print(f"{column} model MAE: {mae:.2f}")
-
-# # Define the new income value for prediction
-# new_income = 1000  # for example
-
-# # Convert it into the format expected by the model
-# new_income_df = pd.DataFrame([[new_income]], columns=['Monthly_Income'])
-
-# # Predict each expense category based on the new income value
-# suggestions = {}
-# for column, model in models.items():
-#     suggested_value = model.predict(new_income_df)[0]
-#     suggestions[column] = round(suggested_value, 2)
-
-# print("\nSuggested spending values based on monthly income:")
-# print(suggestions)
-
-# # Plot Income vs each Expense Category
-# fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(14, 10))
-# fig.suptitle("Monthly Income vs Expense Categories (Random Forest)", fontsize=16)
-
-# # Flatten axes for easy indexing
-# axes = axes.flatten()
-
-# # Generate scatter plots with predicted regression lines for each expense category
-# for i, column in enumerate(y.columns):
-#     # Plot actual data points
-#     axes[i].scatter(X, y[column], color='blue', alpha=0.5, label="Actual")
-    
-#     # Plot the predictions from the Random Forest model
-#     axes[i].scatter(X, predictions[column], color='red', alpha=0.5, label="Predicted")
-    
-#     # Set labels and title
-#     axes[i].set_xlabel("Monthly Income")
-#     axes[i].set_ylabel(column)
-#     axes[i].set_title(f"Income vs {column}")
-#     axes[i].legend()
-
-# # Hide any unused subplots
-# for j in range(len(y.columns), len(axes)):
-#     fig.delaxes(axes[j])
-
-# plt.tight_layout(rect=[0, 0.03, 1, 0.95])  # Adjust layout to fit titles
-# plt.show()
-
-
-import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_absolute_error
-import joblib  # For saving models
-import os      # For managing file paths
-
-# Create directory for exported models and plots if not exist
+#Create directory for exported models and plots if not exist
 os.makedirs("models", exist_ok=True)
 os.makedirs("plots", exist_ok=True)
-
-# Load the dataset
 data = pd.read_csv('UK_Student_Expenses.csv')
 
-# Set up features (X) and targets (y)
+#Set up features (X) and targets (y)
 X = data[['Monthly_Income']]
 y = data[['Student_Accommodation', 'Utilities', 'Grocery_shopping', 'Takeaways/dining', 'Public_Transportation']]
-
-# Initialize dictionaries to store models and predictions
 models = {}
 predictions = {}
 
-# Loop through each target expense column
+#Loop through each target expense column
 for column in y.columns:
-    # Split data for training and testing
     X_train, X_test, y_train, y_test = train_test_split(X, y[column], test_size=0.2, random_state=42)
     
-    # Train a Random Forest model for each expense category
+    #Train a Random Forest model for each expense category
     model = LinearRegression()
     model.fit(X_train, y_train)
-    
-    # Store the model and make predictions on the entire X for visualization
     models[column] = model
     predictions[column] = model.predict(X)
     
-    # Save each model to disk, replacing any slashes in column names
+    #Save each model to disk, replacing any slashes in column names
     sanitized_column = column.replace("/", "_")  # Replace special characters
     joblib.dump(model, f"models/{sanitized_column}_model.joblib")
     
-    # Calculate performance (mean absolute error)
+    #Calculate performance (mean absolute error)
     mae = mean_absolute_error(y_test, model.predict(X_test))
     print(f"{column} model MAE: {mae:.2f}")
 
-# Define the new income value for prediction
-new_income = 1000  # for example
+#Define the new income value for prediction
+new_income = 1000 
 
-# Convert it into the format expected by the model
+#Convert it into the format expected by the model
 new_income_df = pd.DataFrame([[new_income]], columns=['Monthly_Income'])
 
-# Predict each expense category based on the new income value
+#Predict each expense category based on the new income value
 suggestions = {}
 for column, model in models.items():
     suggested_value = model.predict(new_income_df)[0]
@@ -255,38 +50,37 @@ for column, model in models.items():
 print("\nSuggested spending values based on monthly income:")
 print(suggestions)
 
-# Plot Income vs each Expense Category
+#Plot Income vs each Expense Category
 fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(14, 10))
-fig.suptitle("Monthly Income vs Expense Categories (Random Forest)", fontsize=16)
+fig.suptitle("Monthly Income vs Expense Categories Linear Regression", fontsize=16)
 
-# Flatten axes for easy indexing
+#Flatten axes for easy indexing
 axes = axes.flatten()
 
-# Generate scatter plots with predicted regression lines for each expense category
+#Generate scatter plots with predicted regression lines for each expense category
 for i, column in enumerate(y.columns):
-    # Plot actual data points
+    #Plot actual data points
     axes[i].scatter(X, y[column], color='blue', alpha=0.5, label="Actual")
     
-    # Plot the predictions from the Random Forest model
+    #Plot the predictions from the Random Forest model
     axes[i].scatter(X, predictions[column], color='red', alpha=0.5, label="Predicted")
     
-    # Set labels and title
+    #Set labels and title
     axes[i].set_xlabel("Monthly Income")
     axes[i].set_ylabel(column)
     axes[i].set_title(f"Income vs {column}")
     axes[i].legend()
 
-    # Save each subplot as an individual image, sanitizing the column name for file compatibility
+    #Save each subplot as an individual image, sanitizing the column name for file compatibility
     fig_path = f"plots/{sanitized_column}_plot.png"
     plt.savefig(fig_path)
-    print(f"Saved plot for {column} at {fig_path}")
 
-# Hide any unused subplots
+#Hide any unused subplots
 for j in range(len(y.columns), len(axes)):
     fig.delaxes(axes[j])
 
-plt.tight_layout(rect=[0, 0.03, 1, 0.95])  # Adjust layout to fit titles
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])  #Adjust layout to fit titles
 
-# Save the complete figure with all subplots
+#Save the complete figure with all subplots
 plt.savefig("plots/Income_vs_Expense_Categories.png")
 plt.show()
