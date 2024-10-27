@@ -9,10 +9,12 @@ import {
 } from 'mdb-react-ui-kit';
 
 import './CSS/Register.css';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 function RegisterPage() {
     const [formData, setFormData] = useState({ name: '', pass: '' });
     const [error, setError] = useState({ isError: false, errorMessage: "" });
+    const navigate = useNavigate(); // Initialize useNavigate
 
     const handleSubmit = async (e) => {
         e.preventDefault();  // Prevents the form from reloading the page
@@ -33,6 +35,8 @@ function RegisterPage() {
             }
             // Clear form data on success
             setFormData({ name: '', pass: '' });
+            navigate('/login')
+
         } catch (error) {
             console.log("Error in post request:", error.message);
         }
