@@ -6,8 +6,10 @@ function MachineLearning(){
     const [actualData,setData] = useState(defaultData);
     useEffect(() => {
         async function getData(){
-          const data = await axios.post("http://127.0.0.1:5000/getDataNoName");
-          
+            const storedName = localStorage.getItem("name");
+            console.log("stored name ",storedName)
+            const data = await axios.post("http://127.0.0.1:5000/homepage",{"username":storedName});
+            console.log(data)
           setData(data.data.user)
         }
   
@@ -20,7 +22,17 @@ function MachineLearning(){
         setIncome(total);
       }, [])
 
-
+    //   useEffect(() => {
+    //     async function getData(){
+    //       const data = await axios.post("http://127.0.0.1:5000/userobject");
+          
+    //       setData(data.data.user)
+    //     }
+  
+    //     getData()
+    //     setBalance(actualData.balance)
+    //     setLoaded(true)
+    //   }, [])
     return(
         <>
         <h1>

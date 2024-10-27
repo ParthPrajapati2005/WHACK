@@ -35,7 +35,8 @@ function LoginPage() {
             } else {
                 setError({ isError: false, errorMessage: "" });
                 setIsAuthenticated(true);
-                navigate('/menu');
+                localStorage.setItem("name", formData.name);
+                navigate('/ml');
             }
             // Clear form data on success
             setFormData({ name: '', pass: '' });

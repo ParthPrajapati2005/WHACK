@@ -6,6 +6,8 @@ import { ReactComponent as PenBtn } from "./assets/pen.svg"
 import { Modal, Form, Button }  from 'react-bootstrap';
 import { ReactComponent as BinBtn } from "./assets/bin.svg"
 import { PiArrowSquareInThin } from "react-icons/pi";
+import { useNavigate } from 'react-router-dom';
+
 
 function Menu(){
 
@@ -20,6 +22,7 @@ function Menu(){
   const [showBalanceModal,setShowBalanceModal] = useState(false);
   const [loaded,setLoaded] = useState(false);
 
+  const navigate = useNavigate();
   const handleClose = () => setShow(false);
   const handleOpen = (pen, key, value, type) => {
     if(pen !== undefined){
@@ -142,7 +145,7 @@ const handleBalanceChange = () => {
       default:
         console.log("not found");
     }
-
+    navigate("/ml")
     }, [newThing])
 
 
@@ -300,6 +303,7 @@ const handleBalanceChange = () => {
                       ))}
             </div>
         </div>
+
     )
 
 

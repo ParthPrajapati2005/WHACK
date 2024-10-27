@@ -94,7 +94,7 @@ def getData():
     username = data.get('username')
     theUser = mycol.find_one({"username": username})
     if theUser == None:
-        return jsonify({"message":"User not found"},status=404),404
+        return jsonify({"message":"User not found"}),200
     return jsonify(theUser,status=200),200
 
 @app.route('/getDataNoName', methods=['POST'])
@@ -102,7 +102,7 @@ def getDataNoName():
     theUser = mycol.find_one({"username": user})
     if theUser == None:
         return jsonify({"message":"User not found"},status=404),404
-    return jsonify(theUser,status=200),200
+    return jsonify(theUser),200
 
 @app.route('/banks', methods=['POST'])
 def getBankData():
