@@ -37,3 +37,5 @@ def getLISA():
 
     print(lisa_data)
     return lisa_data
+
+getLISA()
