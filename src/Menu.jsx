@@ -152,6 +152,8 @@ const handleBalanceChange = () => {
       async function getData(){
         let storedName = localStorage.getItem("user")
         const data = await axios.post("http://127.0.0.1:5000/userobject");
+        console.log(data.data);
+        localStorage.setItem('forDashboard', JSON.stringify(data.data));
         setData(data.data.user)
       }
 

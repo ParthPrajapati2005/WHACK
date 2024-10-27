@@ -45,6 +45,7 @@ function MachineLearning(){
             
             </div>
         </div>
+        </>
     )
 }
 

@@ -44,6 +44,12 @@ function Dashboard(){
     const [goals, setGoals] = useState([]);
     const [editIndex, setEditIndex] = useState(null);
 
+    const [user, setUser] = useState('');
+    const [income, setIncome] = useState(0);
+    const [expenses, setExpenses] = useState(0);
+    const [debt, setDebt] = useState(0);
+    const [updated, setUpdated] = useState(false);
+
     const icons = [
         { name: 'Star', component: <StarIcon /> },
         { name: 'Favorite', component: <FavoriteIcon /> },
@@ -89,16 +95,26 @@ function Dashboard(){
     };
 
     useEffect(() => {
-        const fetchData = async () =>{
-            try{
-                console.log("2");
-                const response = await axios.get('http://127.0.0.1:5000/userobject');
-                console.log(response);
-            } catch(error){
-                return error;
-            }
+        const data = JSON.parse(localStorage.getItem('forDashboard')).user;
+        setUser(data.name);
+        let totalIncome = 0;
+        let totalExpenses = 0;
+        let totalDebt = 0;
+        console.log(data.income);
+        for(let key in data.income){
+            console.log(key, data.income[key]);
+            totalIncome+=parseInt(data.income[key]);
         }
-        fetchData();
+        for(let key in data.expenses){
+            //console.log(key, data.expenses[key])
+            totalExpenses+=parseInt(data.expenses[key]);
+        }
+        for(let key in data.debt){
+            totalDebt+=parseInt(data.debt[key]);
+        }
+        setIncome(totalIncome);
+        setExpenses(totalExpenses);
+        setDebt(totalDebt);
     }, [])
 
     return(
@@ -106,7 +122,7 @@ function Dashboard(){
             <nav className="flex justify-between col-span-3 bg-blue-700 rounded-xl px-3 shadow-xl">
                 <div className="flex flex-col justify-center">
                     <p className='font-extrabold text-2xl pt-2'>Future Self</p>
-                    <h2>Welcome back, username!</h2>
+                    <h2>Welcome back, {user} !</h2>
                 </div>
                 <div className='flex items-center justify-between gap-5'>
                     <button><BugReport /></button>
@@ -118,9 +134,9 @@ function Dashboard(){
                 <PieChart series={[
                     {
                         data:[
-                            {id:0, value:10},
-                            {id:1, value:15, label:'series B'},
-                            {id:2, value:25, label:'series C'},
+                            {id:0, value:income, label: 'Incomes'},
+                            {id:1, value:expenses, label:'Expenses'},
+                            {id:2, value:debt, label:'Debt'},
                         ],
                         innerRadius: 64,
                         outerRadius: 100,
