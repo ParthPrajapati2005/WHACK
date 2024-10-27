@@ -6,7 +6,7 @@ function MachineLearning(){
     const [actualData,setData] = useState(defaultData);
     useEffect(() => {
         async function getData(){
-          const data = await axios.post("http://127.0.0.1:5000/userobject");
+          const data = await axios.post("http://127.0.0.1:5000/getDataNoName");
           
           setData(data.data.user)
         }
