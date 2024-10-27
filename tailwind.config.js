@@ -6,6 +6,7 @@ module.exports = {
   theme: {
     fontFamily: {
       'roboto': ['Roboto'],
+      'merriweather': ['Merriweather'],
     },
     extend: {},
   },
